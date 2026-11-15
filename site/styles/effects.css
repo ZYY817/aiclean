@@ -1,0 +1,143 @@
+/* ============================================================
+   effects · 全部动画。
+   约定：只动 transform / opacity / filter；
+   全部包在 (prefers-reduced-motion: no-preference) 内，
+   减动效用户看到的就是静态终态（元素本身不带初始隐藏样式
+   之外的声明——隐藏状态也写在这一层，见下）。
+   ============================================================ */
+
+/* 初始隐藏态必须同样受媒体查询保护，否则减动效下内容永远不出现 */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---------- 通用入场（IntersectionObserver 驱动） ---------- */
+  [data-rv] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity .7s ease calc(var(--rvd, 0ms)),
+      transform .7s var(--ease-out) calc(var(--rvd, 0ms));
+  }
+  [data-rv].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  /* 轻微缩放变体（窗口卡等） */
+  [data-rv="zoom"] { transform: translateY(18px) scale(.96); }
+  [data-rv="zoom"].is-in { transform: none; }
+
+  /* ---------- Hero 逐词 blur-in ---------- */
+  @keyframes word-in {
+    from { opacity: 0; transform: translateY(50%); filter: blur(10px); }
+    to   { opacity: 1; transform: none;          filter: blur(0); }
+  }
+  .hw {
+    animation: word-in .55s var(--ease-out) both;
+    animation-delay: calc(var(--i) * 55ms);
+  }
+  /* 副文 / 按钮 / 小字 / 面板 依次跟上，总时长压在 ~1s */
+  .hero__sub  { animation: word-in .5s var(--ease-out) .42s both; }
+  .hero__ctas { animation: word-in .5s var(--ease-out) .52s both; }
+  .hero__meta { animation: word-in .5s var(--ease-out) .60s both; }
+  .eyebrow    { animation: word-in .5s var(--ease-out) .05s both; }
+  .hero__visual {
+    animation: hero-panel .7s var(--ease-out) .3s both;
+  }
+  @keyframes hero-panel {
+    from { opacity: 0; transform: translateY(24px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ---------- 格子波浪入场 ----------
+     delay = 列×12ms + 行×30ms（JS 写入 --d）。
+     用 backwards 填充：动画结束后不再覆盖 inline transform，
+     鼠标透镜才能继续控制 transform。 */
+  @keyframes cell-in {
+    from { opacity: 0; transform: scale(.3); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  /* :not(.cell--scan)：否则 wave 的 animation 简写会永久
+     覆盖扫描格的呼吸动画（结束后也不恢复） */
+  .gmap.run .cell:not(.cell--scan) {
+    animation: cell-in .5s var(--ease-spring) var(--d, 0ms) backwards;
+  }
+  /* 迷你图同理但更轻 */
+  .minimap.run .cell, .cardmap.run .cell {
+    animation: cell-in .45s var(--ease-spring) var(--d, 0ms) backwards;
+  }
+
+  /* ---------- 扫描中格：呼吸 ---------- */
+  @keyframes cell-breathe {
+    0%, 100% { opacity: 1;   filter: brightness(1); }
+    50%      { opacity: .35; filter: brightness(1.35); }
+  }
+  .cell--scan { animation: cell-breathe 1.5s ease-in-out infinite; }
+
+  /* ---------- 斜向扫描光束（全站仅此一处炫光） ---------- */
+  @keyframes beam-sweep {
+    0%        { transform: translateX(-140%) skewX(-8deg); }
+    55%, 100% { transform: translateX(420%)  skewX(-8deg); }
+  }
+  .panel__beam { animation: beam-sweep 7.5s ease-in-out 1.4s infinite; }
+
+  /* ---------- pane1 迷你图扫描线 ----------
+     只动 transform：700px 行程对常见面板宽度留有余量，
+     扫出头即被 minimap 的 overflow 裁掉。 */
+  @keyframes scanline {
+    from { transform: translateX(-6px); }
+    to   { transform: translateX(700px); }
+  }
+  .minimap__scan { left: 0; animation: scanline 3.2s linear infinite; }
+
+  /* ---------- pane3 模拟按住：循环填充 ----------
+     0→1 用 1.4s，满格停 1s，回空后停 0.8s —— 像有人在演示 */
+  @keyframes mock-hold {
+    0%       { transform: scaleX(0); }
+    35%      { transform: scaleX(1); }
+    60%      { transform: scaleX(1); }
+    62%      { transform: scaleX(0); }
+    100%     { transform: scaleX(0); }
+  }
+  .mockhold__fill { animation: mock-hold 4s ease-in-out infinite; }
+  @keyframes pips-chase {
+    0%   { opacity: .3; }
+    30%  { opacity: 1; }
+    62%  { opacity: .3; }
+    100% { opacity: .3; }
+  }
+  .mockhold__pips i { animation: pips-chase 4s linear infinite; animation-delay: calc(var(--i) * 90ms); }
+
+  /* ---------- 步骤进度轨：scroll-driven 渐进增强 ----------
+     不支持 animation-timeline 的浏览器得到静态终态（完整轨道）。 */
+  @supports (animation-timeline: view()) {
+    .steps__rail {
+      animation: rail-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 10% exit 90%;
+    }
+    @keyframes rail-grow {
+      from { transform: scaleY(0); }
+      to   { transform: scaleY(1); }
+    }
+  }
+
+  /* ---------- 主题切换 View Transition 微调 ---------- */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: .38s;
+    animation-timing-function: ease;
+  }
+}
+
+/* ---------- 减动效：所有动画归零，元素保持可见终态 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
