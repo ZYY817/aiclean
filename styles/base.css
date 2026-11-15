@@ -1,0 +1,103 @@
+/* ============================================================
+   base · 层顺序声明 + reset + 元素排版
+   ============================================================ */
+
+/* 层顺序在此一次性声明（reset 规则少，并入本文件开头） */
+@layer reset, tokens, base, layout, components, effects;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--nav-h) + 28px); /* 锚点跳转避开浮动导航 */
+  }
+
+  body {
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  img, picture, svg, video { display: block; max-width: 100%; }
+  img { height: auto; }
+
+  input, button, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; background: none; border: 0; padding: 0; }
+
+  ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+
+  a { color: inherit; }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--bg);
+    transition: background-color .35s ease, color .35s ease; /* 主题切换柔化（无 view-transition 时兜底） */
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    line-height: 1.12;
+    letter-spacing: -0.02em;   /* 中文负字距取保守值 */
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  a {
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: .92em;
+  }
+
+  ::selection {
+    background: var(--acc);
+    color: var(--onacc);
+  }
+
+  /* 全局统一的键盘可见焦点；鼠标点击不出现 */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--acc);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* 滚动条跟着主题走，窄、克制 */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--lock);
+    border: 3px solid var(--bg);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 屏幕阅读器专用 */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}

@@ -1,0 +1,88 @@
+/* ============================================================
+   layout · 容器 / 栅格 / section 间距
+   ============================================================ */
+@layer layout {
+
+  .wrap {
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* 各区块统一呼吸节奏 */
+  .section {
+    padding-block: clamp(88px, 12vw, 148px);
+    position: relative;
+  }
+  .section--tight { padding-block: clamp(56px, 8vw, 96px); }
+
+  .section__head {
+    max-width: 640px;
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+  .section__head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* 区块眉题：mono 编号 + 分类词 */
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .kicker::before {
+    content: "";
+    width: 22px; height: 1px;
+    background: var(--rule);
+  }
+  .section__head--center .kicker { justify-content: center; }
+  .section__head--center .kicker::after {
+    content: "";
+    width: 22px; height: 1px;
+    background: var(--rule);
+  }
+
+  .h2 {
+    font-size: clamp(30px, 4.6vw, 46px);
+    color: var(--ink);
+  }
+  .h2 em { font-style: normal; color: var(--ink3); }
+
+  .section__sub {
+    margin-top: 14px;
+    font-size: 17px;
+    color: var(--ink2);
+    max-width: 52ch;
+  }
+  .section__head--center .section__sub { margin-inline: auto; }
+
+  /* 12 列 bento 栅格 */
+  .grid12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+
+  /* 两栏（文/卡）布局 */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: 1fr; }
+    .grid12 { grid-template-columns: repeat(6, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid12 { grid-template-columns: 1fr; }
+  }
+}
