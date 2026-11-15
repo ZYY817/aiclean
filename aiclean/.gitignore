@@ -1,0 +1,14 @@
+# 构建产物
+AIClean.exe
+*.exe~
+web/index.html
+
+# 截图/调试产物
+_shots/
+nul
+
+# 编辑器
+.claude/
+.vscode/
+# 生成物（build.ps1 每次重生成）
+resource.syso

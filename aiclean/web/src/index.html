@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="fog">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIClean</title>
+<!-- @CSS@ -->
+<script>if(!document.querySelector("style"))document.write('<link rel="stylesheet" href="css/app.css">')</script>
+</head>
+<body>
+<div id="app">
+  <header class="top" data-drag>
+    <!-- LOGO 位：换成你自己的 logo 时，替换 .lg 这个 span（保持高度约 20px 即可） -->
+    <div class="logo"><span class="lg" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>AIClean</span></div>
+    <nav class="nav" id="nav">
+      <a data-go="home">总览</a>
+      <a data-go="data">数据<span class="count n" id="nc-data"></span></a>
+      <a data-go="quar" id="nav-quar" style="display:none">残留<span class="badge n" id="nc-quar"></span></a>
+      <a data-go="logs">记录</a>
+      <a data-go="about">关于</a>
+    </nav>
+    <div class="meta">
+      <span class="chip" id="chip-drive" title="其他磁盘可用空间"></span>
+      <button class="ibtn" id="btn-rescan" title="重新扫描" aria-label="重新扫描"><svg viewBox="0 0 24 24"><path d="M20 11A8 8 0 1 0 18 16"/><path d="M20 5v6h-6"/></svg></button>
+      <button class="ibtn" data-go="settings" id="btn-settings" title="设置" aria-label="设置"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+      <span class="wcap" id="wcap">
+        <button class="wb" id="wb-min" title="最小化" aria-label="最小化"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <button class="wb" id="wb-max" title="最大化/还原" aria-label="最大化"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"/></svg></button>
+        <button class="wb wb-x" id="wb-close" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </span>
+    </div>
+  </header>
+
+  <main id="view">
+    <!-- 总览 -->
+    <section class="page" id="p-home">
+      <div class="home">
+        <div class="l">
+          <div class="eyebrow"><span id="h-drive">C 盘 · 本地磁盘</span><span id="h-when"></span></div>
+          <div class="huge n"><span id="h-pct">–</span><sup>%</sup></div>
+          <div class="cap n"><span id="h-used"></span><span id="h-total"></span></div>
+          <p class="say" id="h-say"></p>
+          <div class="acts">
+            <button class="hold" id="h-hold"><span class="holdt" id="h-holdt"></span><span class="pips" aria-hidden="true"></span></button>
+            <button class="ghost" id="h-ghost" data-go="data">逐项查看</button>
+          </div>
+        </div>
+        <div class="r" id="h-r">
+          <div class="rh"><h2 id="h-title">C 盘的格子</h2><span id="h-unit"></span></div>
+          <div class="gridbox" id="h-gridbox"><div id="grid"></div></div>
+          <div class="key" id="h-key"></div>
+          <div class="tip" id="tip"></div>
+        </div>
+      </div>
+    </section>
+    <section class="page" id="p-data"></section>
+    <section class="page" id="p-quar"></section>
+    <section class="page" id="p-logs"></section>
+    <section class="page" id="p-settings"></section>
+    <section class="page" id="p-about"></section>
+  </main>
+
+  <footer class="tick" id="tick"><span class="lab">占用排行</span><div class="runwrap"><div class="run" id="tick-run"></div></div></footer>
+</div>
+
+<div id="dlg-root"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<!-- @JS@ -->
+<script>if(!window.AIC_PACKED)["00-core","10-model","20-home","30-data","40-quar-logs","50-settings","60-about","90-init"].forEach(function(f){document.write('<script src="js/'+f+'.js"><\/script>')})</script>
+</body>
+</html>

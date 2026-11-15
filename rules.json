@@ -1,0 +1,2748 @@
+{
+  "version": 1,
+  "comment": "AI 工具与常见大户的数据目录知识库。risk: safe=可安全删除 / caution=删除有轻微影响 / user-data=有用户数据建议迁移 / review=需人工判断。action: delete / migrate / review / ignore。requiresClosed: 列出的进程在运行则跳过。",
+  "rules": [
+    {
+      "id": "codex-sessions",
+      "path": "%USERPROFILE%\\.codex\\sessions",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "codex"
+      ],
+      "prunable": true,
+      "defaultPruneDays": 30,
+      "note": "Codex 会话历史，持续增长的元凶之一。可按天数清理旧会话或整体迁移。"
+    },
+    {
+      "id": "codex-archived",
+      "path": "%USERPROFILE%\\.codex\\archived_sessions",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "codex"
+      ],
+      "prunable": true,
+      "defaultPruneDays": 90,
+      "note": "已归档的 Codex 会话，可按天数清理。"
+    },
+    {
+      "id": "codex-sqlite",
+      "path": "%USERPROFILE%\\.codex\\sqlite",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "会话数据库。必须在 Codex 完全退出后迁移。"
+    },
+    {
+      "id": "codex-thread-history",
+      "path": "%USERPROFILE%\\.codex\\thread_history_1.sqlite",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "线程历史数据库文件，删了会丢历史会话记录；确认不需要了再删"
+    },
+    {
+      "id": "codex-worktrees",
+      "path": "%USERPROFILE%\\.codex\\worktrees",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "git worktree，可能含未提交代码。先确认每个 worktree 已合并/推送再处理。"
+    },
+    {
+      "id": "codex-images",
+      "path": "%USERPROFILE%\\.codex\\generated_images",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "AI 生成的图片。默认迁移；确认不要可删。"
+    },
+    {
+      "id": "codex-visualizations",
+      "path": "%USERPROFILE%\\.codex\\visualizations",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "生成的可视化文件。"
+    },
+    {
+      "id": "codex-tmp",
+      "path": "%USERPROFILE%\\.codex\\tmp",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "临时文件，可删。"
+    },
+    {
+      "id": "codex-tmp2",
+      "path": "%USERPROFILE%\\.codex\\.tmp",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "临时文件，可删。"
+    },
+    {
+      "id": "codex-cache",
+      "path": "%USERPROFILE%\\.codex\\cache",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "缓存，可再生。"
+    },
+    {
+      "id": "codex-sandbox-bin",
+      "path": "%USERPROFILE%\\.codex\\.sandbox-bin",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "沙箱运行时二进制，需要时会重新下载。"
+    },
+    {
+      "id": "codex-runtimes",
+      "path": "%USERPROFILE%\\.cache\\codex-runtimes",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "codex"
+      ],
+      "note": "Codex 下载的语言运行时缓存，可重新下载。"
+    },
+    {
+      "id": "devin-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Devin",
+      "tool": "Devin Desktop",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Devin",
+        "devin"
+      ],
+      "note": "含 sessions.db（会话库，可能 10GB+）。只能在 Devin 完全退出后迁移。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "workbuddy-workspace",
+      "path": "%USERPROFILE%\\.workbuddy-ai\\workspace",
+      "tool": "WorkBuddy AI",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "WorkBuddy AI",
+        "WorkBuddy"
+      ],
+      "note": "任务工作区，可能含你要的输出文件。先看内容再决定迁移或删。"
+    },
+    {
+      "id": "workbuddy-logs",
+      "path": "%USERPROFILE%\\.workbuddy-ai\\logs",
+      "tool": "WorkBuddy AI",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "WorkBuddy",
+        "WorkBuddy AI"
+      ],
+      "note": "日志。"
+    },
+    {
+      "id": "workbuddy-traces",
+      "path": "%USERPROFILE%\\.workbuddy-ai\\traces",
+      "tool": "WorkBuddy AI",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "WorkBuddy",
+        "WorkBuddy AI"
+      ],
+      "note": "调用链追踪数据。"
+    },
+    {
+      "id": "workbuddy-blobs",
+      "path": "%USERPROFILE%\\.workbuddy-ai\\blobs",
+      "tool": "WorkBuddy AI",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [
+        "WorkBuddy AI",
+        "WorkBuddy"
+      ],
+      "note": "二进制对象存储，迁移更稳。"
+    },
+    {
+      "id": "gemini-antigravity",
+      "path": "%USERPROFILE%\\.gemini\\antigravity",
+      "tool": "Gemini/Antigravity",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "antigravity",
+        "gemini"
+      ],
+      "note": "Antigravity IDE 的工作数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "claude-dotdir",
+      "path": "%USERPROFILE%\\.claude",
+      "tool": "Claude Code",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "claude"
+      ],
+      "note": "Claude Code 配置（小）。会话记录在 .claude\\projects。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "claude-projects",
+      "path": "%USERPROFILE%\\.claude\\projects",
+      "tool": "Claude Code",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "claude"
+      ],
+      "prunable": true,
+      "defaultPruneDays": 30,
+      "note": "Claude Code 逐项目会话记录(jsonl)，可按天数清理旧对话。"
+    },
+    {
+      "id": "claude-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Claude",
+      "tool": "Claude Desktop",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Claude"
+      ],
+      "note": "Claude 桌面端数据；其中 Cache/GPUCache/logs 子项删了也无妨。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "grok-dotdir",
+      "path": "%USERPROFILE%\\.grok",
+      "tool": "Grok",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "Grok 客户端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "kimi-dotdir",
+      "path": "%USERPROFILE%\\.kimi-code",
+      "tool": "Kimi Code",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "kimi"
+      ],
+      "note": "Kimi Code 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "qoder-dirs",
+      "path": "%USERPROFILE%\\.qoder",
+      "tool": "Qoder",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Qoder"
+      ],
+      "note": "Qoder IDE 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "qodersec",
+      "path": "%USERPROFILE%\\.qodersec",
+      "tool": "Qoder",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [
+        "Qoder"
+      ],
+      "note": "Qoder 安全组件数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "zcode",
+      "path": "%USERPROFILE%\\.zcode",
+      "tool": "ZCode",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "ZCode"
+      ],
+      "note": "ZCode 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "dimcode",
+      "path": "%USERPROFILE%\\.dimcode",
+      "tool": "DimCode",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "dimcode"
+      ],
+      "note": "DimCode 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "dsh",
+      "path": "%USERPROFILE%\\.dsh",
+      "tool": "DSH Agent",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "DSH agent 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "minimax",
+      "path": "%USERPROFILE%\\.minimax",
+      "tool": "MiniMax",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "MiniMax agent 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "mavis",
+      "path": "%USERPROFILE%\\.mavis",
+      "tool": "Mavis",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "Mavis agent 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "codebuddy",
+      "path": "%USERPROFILE%\\.codebuddy",
+      "tool": "CodeBuddy",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "CodeBuddy"
+      ],
+      "note": "CodeBuddy 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "opencode-desktop",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\ai.opencode.desktop",
+      "tool": "OpenCode",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "opencode"
+      ],
+      "note": "OpenCode 桌面端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "opencode-cache",
+      "path": "%USERPROFILE%\\.cache\\opencode",
+      "tool": "OpenCode",
+      "category": "ai",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "opencode"
+      ],
+      "note": "OpenCode 缓存。"
+    },
+    {
+      "id": "hyperframes",
+      "path": "%USERPROFILE%\\.cache\\hyperframes",
+      "tool": "HyperFrames",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "HyperFrames 生成物缓存。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "local-openai",
+      "path": "%USERPROFILE%\\AppData\\Local\\OpenAI",
+      "tool": "ChatGPT Desktop",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [
+        "ChatGPT"
+      ],
+      "note": "ChatGPT 桌面端本地数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "claude-3p",
+      "path": "%USERPROFILE%\\AppData\\Local\\Claude-3p",
+      "tool": "Claude 第三方客户端",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "第三方 Claude 客户端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "antigravity-updater",
+      "path": "%USERPROFILE%\\AppData\\Local\\antigravity-updater",
+      "tool": "Antigravity",
+      "category": "ai",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [
+        "antigravity"
+      ],
+      "note": "更新器目录，可能含程序本体；删除可能破坏自更新，确认里面只是安装包缓存再删。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "mimo-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Xiaomi MiMo",
+      "tool": "Xiaomi MiMo",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "小米 MiMo 客户端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "playwright",
+      "path": "%USERPROFILE%\\AppData\\Local\\ms-playwright",
+      "tool": "Playwright",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "自动化浏览器二进制，npx playwright install 可重装。"
+    },
+    {
+      "id": "pip-cache",
+      "path": "%USERPROFILE%\\AppData\\Local\\pip\\cache",
+      "tool": "pip",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "pip 包缓存，可再生。"
+    },
+    {
+      "id": "pnpm-store",
+      "path": "%LOCALAPPDATA%\\pnpm\\store",
+      "tool": "pnpm",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "pnpm 全局 store，可再生；删后首次安装变慢。"
+    },
+    {
+      "id": "npm-cache",
+      "path": "%USERPROFILE%\\AppData\\Local\\npm-cache",
+      "tool": "npm",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "npm 缓存，可再生。"
+    },
+    {
+      "id": "npm-cache-roaming",
+      "path": "%APPDATA%\\npm-cache",
+      "tool": "npm",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "npm 缓存（老版本默认位置），可再生。"
+    },
+    {
+      "id": "yarn-cache",
+      "path": "%USERPROFILE%\\AppData\\Local\\Yarn\\Cache",
+      "tool": "yarn",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "yarn 缓存，可再生。"
+    },
+    {
+      "id": "uv-cache",
+      "path": "%LOCALAPPDATA%\\uv\\cache",
+      "tool": "uv",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "uv 包缓存，可再生。"
+    },
+    {
+      "id": "nvidia-dxcache",
+      "path": "%LOCALAPPDATA%\\NVIDIA\\DXCache",
+      "tool": "NVIDIA",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "NVIDIA 着色器缓存，无底洞型再生垃圾，删了游戏首次启动重建。"
+    },
+    {
+      "id": "nvidia-glcache",
+      "path": "%LOCALAPPDATA%\\NVIDIA\\GLCache",
+      "tool": "NVIDIA",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "OpenGL 着色器缓存，同上。"
+    },
+    {
+      "id": "d3dscache",
+      "path": "%LOCALAPPDATA%\\D3DSCache",
+      "tool": "DirectX",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "DirectX 着色器缓存，再生型。"
+    },
+    {
+      "id": "amd-dxcache",
+      "path": "%LOCALAPPDATA%\\AMD\\DxCache",
+      "tool": "AMD",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "AMD 着色器缓存。"
+    },
+    {
+      "id": "nuget-packages",
+      "path": "%USERPROFILE%\\.nuget\\packages",
+      "tool": "NuGet",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "dotnet",
+        "msbuild",
+        "VBCSCompiler"
+      ],
+      "note": ".NET 全局包缓存，可再生（首次还原变慢）。"
+    },
+    {
+      "id": "m2-repo",
+      "path": "%USERPROFILE%\\.m2\\repository",
+      "tool": "Maven",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Maven 依赖缓存，删后构建重新下载（变慢）；注意本地 mvn install 的私有构件无法从远程恢复。"
+    },
+    {
+      "id": "gradle-cache",
+      "path": "%USERPROFILE%\\.gradle\\caches",
+      "tool": "Gradle",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "Gradle 依赖缓存，可再生。"
+    },
+    {
+      "id": "vscode-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Code",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "Code"
+      ],
+      "note": "其中 Cache/CachedData/logs/Crashpad 可删，User 目录是设置别动。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "vscode-ext",
+      "path": "%USERPROFILE%\\.vscode\\extensions",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "扩展本体，删了要重装。"
+    },
+    {
+      "id": "github-desktop",
+      "path": "%USERPROFILE%\\AppData\\Local\\GitHubDesktop",
+      "tool": "GitHub Desktop",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "GitHubDesktop"
+      ],
+      "note": "大部分是 app 本体和缓存。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "wechat-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Tencent",
+      "tool": "微信/QQ",
+      "category": "social",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "QQ",
+        "QQNT",
+        "TIM",
+        "WeChat",
+        "Weixin",
+        "WeMeetApp"
+      ],
+      "note": "整个腾讯 Roaming 目录（微信/QQ 配置与缓存，含腾讯会议数据）。迁移到 D/E 盘是根治，应用照常工作。",
+      "reportOnly": true,
+      "scanHeuristics": true
+    },
+    {
+      "id": "xwechat",
+      "path": "%USERPROFILE%\\Documents\\xwechat_files",
+      "tool": "微信4.0",
+      "category": "social",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Weixin",
+        "WeChat"
+      ],
+      "note": "新版微信文件存储。"
+    },
+    {
+      "id": "wechat-files",
+      "path": "%USERPROFILE%\\Documents\\WeChat Files",
+      "tool": "微信3.x",
+      "category": "social",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "WeChat",
+        "Weixin"
+      ],
+      "note": "微信 3.x 聊天文件主目录，通常数 GB 到几十 GB。迁移到其他盘是根治。"
+    },
+    {
+      "id": "wechat-work-docs",
+      "path": "%USERPROFILE%\\Documents\\WXWork",
+      "tool": "企业微信",
+      "category": "social",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "WXWork"
+      ],
+      "note": "企业微信接收的文件，建议迁移到其他盘释放 C 盘；迁移后企业微信照常使用"
+    },
+    {
+      "id": "codex-docs",
+      "path": "%USERPROFILE%\\Documents\\Codex",
+      "tool": "OpenAI Codex",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "Codex 写到文档目录的产物。"
+    },
+    {
+      "id": "cursor-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Cursor",
+      "tool": "Cursor",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Cursor"
+      ],
+      "note": "Cursor IDE 数据（会话/工作区存储）。其中 Cache/logs 子项可删。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "cursor-dotdir",
+      "path": "%USERPROFILE%\\.cursor",
+      "tool": "Cursor",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Cursor 扩展与配置，删了要重装扩展。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "windsurf-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Windsurf",
+      "tool": "Windsurf",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Windsurf"
+      ],
+      "note": "Windsurf IDE 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "windsurf-dotdir",
+      "path": "%USERPROFILE%\\.windsurf",
+      "tool": "Windsurf",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Windsurf 扩展与配置。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "trae-roaming",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Trae",
+      "tool": "Trae",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Trae"
+      ],
+      "note": "字节 Trae IDE 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "continue-dotdir",
+      "path": "%USERPROFILE%\\.continue",
+      "tool": "Continue",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Code",
+        "Cursor"
+      ],
+      "prunable": true,
+      "defaultPruneDays": 60,
+      "note": "Continue 会话索引与日志，可按天数清理旧记录。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "ollama-models",
+      "path": "%USERPROFILE%\\.ollama\\models",
+      "tool": "Ollama",
+      "category": "ai",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [
+        "ollama",
+        "ollama app"
+      ],
+      "note": "本地模型，动辄几 GB~几十 GB。迁到其他盘能省 C 盘，模型经链接照常加载；重拉也方便。"
+    },
+    {
+      "id": "hf-cache",
+      "path": "%USERPROFILE%\\.cache\\huggingface",
+      "tool": "HuggingFace",
+      "category": "ai",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "HF 模型/数据集缓存，可能巨大。可迁移到其他盘，模型仍可被加载（原位置留链接）。"
+    },
+    {
+      "id": "lmstudio",
+      "path": "%USERPROFILE%\\.lmstudio",
+      "tool": "LM Studio",
+      "category": "ai",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [
+        "LM Studio"
+      ],
+      "note": "LM Studio 模型库，通常很大。建议迁移到其他盘。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "lmstudio-local",
+      "path": "%USERPROFILE%\\AppData\\Local\\LM-Studio",
+      "tool": "LM Studio",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "LM Studio"
+      ],
+      "note": "LM Studio 应用本体与缓存。",
+      "scanHeuristics": true,
+      "reportOnly": true
+    },
+    {
+      "id": "codeium-dotdir",
+      "path": "%USERPROFILE%\\.codeium",
+      "tool": "Codeium",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Codeium/Windsurf 的配置与数据目录（含设置、记忆、扩展状态），整体删会丢配置。建议只清其中缓存子项。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "copilot-chat",
+      "path": "%APPDATA%\\Code\\User\\globalStorage\\github.copilot-chat",
+      "tool": "Copilot Chat",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [
+        "Code"
+      ],
+      "note": "Copilot Chat 会话数据。"
+    },
+    {
+      "id": "cline-storage",
+      "path": "%APPDATA%\\Code\\User\\globalStorage\\saoudrizwan.claude-dev",
+      "tool": "Cline",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Code"
+      ],
+      "prunable": true,
+      "defaultPruneDays": 30,
+      "note": "Cline 任务历史，可按天数清理旧任务。"
+    },
+    {
+      "id": "comate",
+      "path": "%USERPROFILE%\\.comate",
+      "tool": "Comate",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "百度 Comate 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "aider",
+      "path": "%USERPROFILE%\\.aider",
+      "tool": "aider",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "aider 聊天历史。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "tabby",
+      "path": "%USERPROFILE%\\.tabby",
+      "tool": "Tabby",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "tabby"
+      ],
+      "note": "Tabby 本地模型与服务数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "jan",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Jan",
+      "tool": "Jan",
+      "category": "ai",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "Jan"
+      ],
+      "note": "Jan 本地模型与对话。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "cherry-studio",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\CherryStudio",
+      "tool": "Cherry Studio",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "CherryStudio"
+      ],
+      "note": "Cherry Studio 对话与知识库。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "chatbox",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\chatbox",
+      "tool": "Chatbox",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "chatbox"
+      ],
+      "note": "Chatbox 对话数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "deepseek",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\DeepSeek",
+      "tool": "DeepSeek",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "DeepSeek"
+      ],
+      "note": "DeepSeek 桌面端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "doubao",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Doubao",
+      "tool": "豆包",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Doubao"
+      ],
+      "note": "豆包桌面端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "yuanbao",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\yuanbao",
+      "tool": "腾讯元宝",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "yuanbao"
+      ],
+      "note": "腾讯元宝桌面端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "tongyi",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\tongyi",
+      "tool": "通义",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "tongyi"
+      ],
+      "note": "通义桌面端数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "qwen-code",
+      "path": "%USERPROFILE%\\.qwen-code",
+      "tool": "Qwen Code",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "qwen"
+      ],
+      "note": "Qwen Code 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "amp",
+      "path": "%USERPROFILE%\\.config\\amp",
+      "tool": "Amp",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [
+        "amp"
+      ],
+      "note": "Sourcegraph Amp 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "warp",
+      "path": "%USERPROFILE%\\AppData\\Local\\Warp",
+      "tool": "Warp",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Warp"
+      ],
+      "note": "Warp 终端（含 AI 数据）。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "zed",
+      "path": "%USERPROFILE%\\AppData\\Roaming\\Zed",
+      "tool": "Zed",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Zed"
+      ],
+      "note": "Zed 编辑器数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "augment",
+      "path": "%USERPROFILE%\\.augment",
+      "tool": "Augment",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "Augment Code 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "codegeex",
+      "path": "%USERPROFILE%\\.codegeex",
+      "tool": "CodeGeeX",
+      "category": "ai",
+      "risk": "caution",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "CodeGeeX 数据。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "temp",
+      "path": "%USERPROFILE%\\AppData\\Local\\Temp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "olderThanDays": 7,
+      "note": "临时文件，只删 7 天前的。"
+    },
+    {
+      "id": "downloads",
+      "path": "%USERPROFILE%\\Downloads",
+      "tool": "系统",
+      "category": "user",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "下载目录，工具只报告不处理，自己挑着删。",
+      "reportOnly": true
+    },
+    {
+      "id": "local-programs",
+      "path": "%USERPROFILE%\\AppData\\Local\\Programs",
+      "tool": "已装应用",
+      "category": "app",
+      "risk": "review",
+      "action": "review",
+      "reportOnly": true,
+      "requiresClosed": [],
+      "note": "用户级安装的全部应用本体（VS Code、Discord 等）。只能统计和整体评估——迁移整目录风险高（Squirrel 更新器重命名目录会让链接悬空），如需迁移请处理单个应用。",
+      "noMigrate": true
+    },
+    {
+      "id": "edge-cache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Cache",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "Edge 网页缓存，删除后浏览时自动重建。"
+    },
+    {
+      "id": "edge-codecache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Code Cache",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "Edge JS 代码缓存，自动重建。"
+    },
+    {
+      "id": "chrome-cache",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Cache",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "Chrome 网页缓存，删除后自动重建。"
+    },
+    {
+      "id": "chrome-codecache",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Code Cache",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "Chrome JS 代码缓存，自动重建。"
+    },
+    {
+      "id": "vscode-cache",
+      "path": "%APPDATA%\\Code\\Cache",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "code"
+      ],
+      "note": "VS Code 渲染缓存，下次启动自动重建。"
+    },
+    {
+      "id": "vscode-cacheddata",
+      "path": "%APPDATA%\\Code\\CachedData",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "code"
+      ],
+      "note": "VS Code 扩展/编辑器缓存数据，自动重建。"
+    },
+    {
+      "id": "vscode-logs",
+      "path": "%APPDATA%\\Code\\logs",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "code"
+      ],
+      "note": "VS Code 运行日志。"
+    },
+    {
+      "id": "jetbrains-caches",
+      "path": "%LOCALAPPDATA%\\JetBrains\\*\\caches",
+      "tool": "JetBrains IDE",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "aqua64",
+        "clion64",
+        "datagrip64",
+        "dataspell64",
+        "fleet",
+        "fleet64",
+        "goland64",
+        "idea64",
+        "phpstorm64",
+        "pycharm64",
+        "rider64",
+        "rubymine64",
+        "rustrover64",
+        "studio64",
+        "webide64",
+        "webstorm64",
+        "writerside64"
+      ],
+      "note": "JetBrains 全家桶索引缓存（IDEA/PyCharm 等，逐个匹配）。删除后首次打开重建索引，稍慢但安全。"
+    },
+    {
+      "id": "spotify-data",
+      "path": "%LOCALAPPDATA%\\Spotify\\Data",
+      "tool": "Spotify",
+      "category": "app",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "spotify"
+      ],
+      "note": "Spotify 缓存+离线下载内容：流式缓存自动重建，Premium 离线下载的音乐会一并清掉需重新下载。"
+    },
+    {
+      "id": "discord-cache",
+      "path": "%APPDATA%\\discord\\Cache",
+      "tool": "Discord",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "discord"
+      ],
+      "note": "Discord 图片/媒体缓存，自动重建。"
+    },
+    {
+      "id": "dingtalk-files",
+      "path": "%USERPROFILE%\\Documents\\DingTalk",
+      "tool": "钉钉",
+      "category": "social",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [
+        "DingTalk",
+        "DingtalkLite"
+      ],
+      "note": "钉钉聊天文件。建议迁移到其他盘；或在钉钉内清理。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "qq-files",
+      "path": "%USERPROFILE%\\Documents\\Tencent Files",
+      "tool": "QQ/TIM",
+      "category": "social",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "QQ.exe",
+        "QQNT.exe",
+        "TIM"
+      ],
+      "note": "QQ 聊天文件/图片/接收文件。建议迁移到其他盘；删会丢聊天附件。",
+      "scanHeuristics": true
+    },
+    {
+      "id": "feishu-data",
+      "path": "%LOCALAPPDATA%\\Feishu",
+      "tool": "飞书",
+      "category": "social",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "Feishu",
+        "Lark"
+      ],
+      "note": "飞书客户端数据与缓存。"
+    },
+    {
+      "id": "docker-wsl",
+      "path": "%LOCALAPPDATA%\\Docker\\wsl",
+      "tool": "Docker Desktop",
+      "category": "dev",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [
+        "com.docker.backend",
+        "Docker Desktop",
+        "vmmem",
+        "vmmemWSL",
+        "vmwp",
+        "wslservice"
+      ],
+      "note": "Docker 的 WSL 虚拟磁盘（ext4.vhdx），可能达几十 GB。迁移到其他盘是释放 C 盘的最有效方式；Docker 经链接照常访问。"
+    },
+    {
+      "id": "wsl-distros",
+      "path": "%LOCALAPPDATA%\\Packages\\*\\LocalState",
+      "matchFile": "*.vhdx",
+      "tool": "WSL 发行版",
+      "category": "dev",
+      "risk": "review",
+      "action": "migrate",
+      "requiresClosed": [
+        "vmmem",
+        "vmmemWSL",
+        "vmwp",
+        "wsl",
+        "wslhost",
+        "wslservice"
+      ],
+      "note": "WSL 发行版 LocalState（含虚拟磁盘，逐个匹配）。可整体迁移到其他盘释放 C 盘（应用经链接照常访问）；彻底删除请用 wsl --unregister。"
+    },
+    {
+      "id": "desktop-dir",
+      "path": "%USERPROFILE%\\Desktop",
+      "tool": "系统",
+      "category": "user",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "桌面文件。自己整理；长期不用的建议移到其他盘。",
+      "reportOnly": true,
+      "noMigrate": true
+    },
+    {
+      "id": "documents-dir",
+      "path": "%USERPROFILE%\\Documents",
+      "tool": "系统",
+      "category": "user",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "文档目录。聊天软件文件往往占大头，建议迁移。",
+      "reportOnly": true,
+      "noMigrate": true
+    },
+    {
+      "id": "pictures-dir",
+      "path": "%USERPROFILE%\\Pictures",
+      "tool": "系统",
+      "category": "user",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "图片目录。建议把大文件移到其他盘。",
+      "reportOnly": true
+    },
+    {
+      "id": "videos-dir",
+      "path": "%USERPROFILE%\\Videos",
+      "tool": "系统",
+      "category": "user",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "视频目录。建议移到其他盘。",
+      "reportOnly": true
+    },
+    {
+      "id": "recycle-bin",
+      "path": "C:\\$Recycle.Bin",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "special": "recycleBin",
+      "note": "回收站。删除后无法恢复，清空前请确认没有要找回的文件。"
+    },
+    {
+      "id": "win-update-dl",
+      "path": "C:\\Windows\\SoftwareDistribution\\Download",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "special": "winUpdate",
+      "note": "Windows Update 下载缓存。清理时会自动暂停更新服务，下次更新重新下载。"
+    },
+    {
+      "id": "delivery-opt",
+      "path": "C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization\\Cache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Windows 更新分发缓存（真实大项），删除后系统会重新下载。"
+    },
+    {
+      "id": "win-temp",
+      "path": "C:\\Windows\\Temp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 7,
+      "note": "系统级临时文件，只删 7 天前的。"
+    },
+    {
+      "id": "wer-queue",
+      "path": "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Windows 错误报告队列，删除安全。"
+    },
+    {
+      "id": "wer-archive",
+      "path": "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "已归档的 Windows 错误报告。"
+    },
+    {
+      "id": "minidump",
+      "path": "C:\\Windows\\Minidump",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "蓝屏小转储文件，排查完就没用了。"
+    },
+    {
+      "id": "memory-dmp",
+      "path": "C:\\Windows\\MEMORY.DMP",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "完整内存转储，可能有好几 GB。排查完蓝屏就没用了。"
+    },
+    {
+      "id": "cbs-logs",
+      "path": "C:\\Windows\\Logs\\CBS",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "组件服务日志，只删 30 天前的。"
+    },
+    {
+      "id": "hiberfil",
+      "path": "C:\\hiberfil.sys",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "special": "hiberOff",
+      "note": "休眠文件（约等于内存大小的一半）。清理 = 关闭休眠功能：笔记本合盖不再休眠、开机快速启动失效。确定不需要再点清理。"
+    },
+    {
+      "id": "windows-old",
+      "path": "C:\\Windows.old",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "review",
+      "reportOnly": true,
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "旧版 Windows 备份，常占几十 GB。不能用普通方式删除（TrustedInstaller 权限），请用系统自带的「磁盘清理 → 清理系统文件」或「设置 → 存储 → 临时文件」处理。",
+      "noMigrate": true
+    },
+    {
+      "id": "search-index",
+      "path": "C:\\ProgramData\\Microsoft\\Search\\Data",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Windows 搜索索引。删除后会重建，期间搜索变慢；占用大才值得动。"
+    },
+    {
+      "id": "crashdumps-user",
+      "path": "%LOCALAPPDATA%\\CrashDumps",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "程序崩溃留下的内存转储（.dmp），只供开发者调试，删了不影响使用。"
+    },
+    {
+      "id": "nvidia-nvcache",
+      "path": "%LOCALAPPDATA%\\NVIDIA Corporation\\NV_Cache",
+      "tool": "NVIDIA",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "NVIDIA 驱动着色器缓存，删了自动重建。"
+    },
+    {
+      "id": "steam-shadercache",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\shadercache",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "steam.exe"
+      ],
+      "note": "每个游戏的预编译着色器。删了游戏下次启动重建，可能多等几十秒。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "steam-depotcache",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\depotcache",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "steam.exe"
+      ],
+      "note": "Steam 下载清单缓存，自动重建。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "steam-downloading",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\downloading",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [
+        "steam.exe"
+      ],
+      "note": "未下完的游戏安装包/更新。删除后对应游戏需要重新下载这部分。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "steam-dumps",
+      "path": "C:\\Program Files (x86)\\Steam\\dumps",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "steam",
+        "steamwebhelper"
+      ],
+      "note": "Steam 崩溃转储，开发者调试用。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "steam-workshop-dl",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\downloads",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [
+        "steam.exe"
+      ],
+      "note": "创意工坊正在下载的 Mod 内容缓存。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "epic-webcache",
+      "path": "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache*",
+      "tool": "Epic Games",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "EpicGamesLauncher.exe"
+      ],
+      "note": "Epic 启动器网页缓存，自动重建。"
+    },
+    {
+      "id": "epic-logs",
+      "path": "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\Logs",
+      "tool": "Epic Games",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "EpicGamesLauncher.exe"
+      ],
+      "note": "启动器运行日志。"
+    },
+    {
+      "id": "epic-crashes",
+      "path": "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\Crashes",
+      "tool": "Epic Games",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "EpicGamesLauncher"
+      ],
+      "note": "启动器崩溃报告。"
+    },
+    {
+      "id": "mc-logs",
+      "path": "%APPDATA%\\.minecraft\\logs",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "javaw"
+      ],
+      "note": "游戏运行日志。"
+    },
+    {
+      "id": "mc-crash",
+      "path": "%APPDATA%\\.minecraft\\crash-reports",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "javaw"
+      ],
+      "note": "崩溃报告，排查用。"
+    },
+    {
+      "id": "mc-saves",
+      "path": "%APPDATA%\\.minecraft\\saves",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "javaw"
+      ],
+      "note": "单人世界存档！删了无法恢复。建议迁移到其他盘，本工具不提供删除。"
+    },
+    {
+      "id": "mc-screenshots",
+      "path": "%APPDATA%\\.minecraft\\screenshots",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "游戏内截图，删前确认有没有留念。"
+    },
+    {
+      "id": "mc-mods",
+      "path": "%APPDATA%\\.minecraft\\mods",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Mod 文件。不玩了可以删，重玩需要重新下载。"
+    },
+    {
+      "id": "mc-resourcepacks",
+      "path": "%APPDATA%\\.minecraft\\resourcepacks",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "材质包文件，可重新下载。"
+    },
+    {
+      "id": "mc-shaderpacks",
+      "path": "%APPDATA%\\.minecraft\\shaderpacks",
+      "tool": "Minecraft",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "光影包文件，可重新下载。"
+    },
+    {
+      "id": "saved-games",
+      "path": "%USERPROFILE%\\Saved Games",
+      "tool": "游戏存档",
+      "category": "game",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "很多游戏（尤其微软商店/Game Pass 游戏）把存档放这里。是你的游戏进度，不要直接删，建议迁移到其他盘。"
+    },
+    {
+      "id": "battlenet-cache",
+      "path": "%APPDATA%\\Battle.net\\Cache",
+      "tool": "Battle.net",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "Agent",
+        "Battle.net.exe"
+      ],
+      "note": "战网启动器缓存，自动重建。"
+    },
+    {
+      "id": "uplay-cache",
+      "path": "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\cache",
+      "tool": "Ubisoft",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "upc.exe"
+      ],
+      "note": "育碧启动器缓存，自动重建。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "ea-desktop-cache",
+      "path": "%PROGRAMDATA%\\Electronic Arts\\EA Desktop\\cache",
+      "tool": "EA",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresAdmin": true,
+      "requiresClosed": [
+        "EADesktop.exe"
+      ],
+      "note": "EA App 缓存，自动重建。"
+    },
+    {
+      "id": "inet-cache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\INetCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "旧式网页缓存（IE/系统组件用），自动重建。"
+    },
+    {
+      "id": "gamedvr-captures",
+      "path": "%USERPROFILE%\\Videos\\Captures",
+      "tool": "Xbox 录屏",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Win+G 游戏录屏的存放目录，可能很大。里面是录制的视频，删前确认。"
+    },
+    {
+      "id": "go-build-cache",
+      "path": "%LOCALAPPDATA%\\go-build",
+      "tool": "Go",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "Go 编译缓存，大型项目下常见数 GB，删了下次编译重建。"
+    },
+    {
+      "id": "cargo-registry-cache",
+      "path": "%USERPROFILE%\\.cargo\\registry\\cache",
+      "tool": "Rust",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "Cargo 下载的 crate 压缩包缓存，可重新下载。"
+    },
+    {
+      "id": "firefox-cache2",
+      "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\cache2",
+      "tool": "Firefox",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "firefox.exe"
+      ],
+      "note": "Firefox 磁盘缓存，关闭浏览器后可删，自动重建。"
+    },
+    {
+      "id": "firefox-startupcache",
+      "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\startupCache",
+      "tool": "Firefox",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "firefox.exe"
+      ],
+      "note": "启动缓存，自动重建。"
+    },
+    {
+      "id": "firefox-thumbs",
+      "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\thumbnails",
+      "tool": "Firefox",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "firefox.exe"
+      ],
+      "note": "网页缩略图缓存。"
+    },
+    {
+      "id": "thumbcache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "资源管理器缩略图缓存，自动重建；资源管理器运行中可能删不掉，重启后会再试。"
+    },
+    {
+      "id": "iconcache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\Explorer\\iconcache_*.db",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "图标缓存，自动重建；运行中可能部分删不掉。"
+    },
+    {
+      "id": "webcache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WebCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Edge/系统组件的网页数据库缓存，通常被占用；关闭浏览器后部分可清。"
+    },
+    {
+      "id": "uwp-inetcache",
+      "path": "%LOCALAPPDATA%\\Packages\\*\\AC\\INetCache",
+      "tool": "UWP 应用",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "商店应用的网页缓存，自动重建。"
+    },
+    {
+      "id": "livekernel",
+      "path": "C:\\Windows\\LiveKernelReports",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "内核实时转储（硬件/驱动诊断用），通常只在出过蓝屏的机器上才有内容。"
+    },
+    {
+      "id": "win-bt",
+      "path": "C:\\$Windows.~BT",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "Windows 升级残留文件，升级完成超过 10 天后可删；删后无法回滚到旧版本。"
+    },
+    {
+      "id": "win-ws",
+      "path": "C:\\$Windows.~WS",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "Windows 升级准备文件残留。"
+    },
+    {
+      "id": "winre-agent",
+      "path": "C:\\$WinREAgent",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "Windows 恢复环境更新临时目录，更新完成后可删。"
+    },
+    {
+      "id": "perflogs",
+      "path": "C:\\PerfLogs",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "性能日志采集目录，一般只有主动开启过性能监视才有内容。"
+    },
+    {
+      "id": "driver-intel",
+      "path": "C:\\Intel",
+      "tool": "驱动残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "Intel 驱动安装包解压残留，装完驱动后可删。"
+    },
+    {
+      "id": "driver-amd",
+      "path": "C:\\AMD",
+      "tool": "驱动残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "AMD 驱动安装包解压残留，装完驱动后可删。"
+    },
+    {
+      "id": "driver-nvidia",
+      "path": "C:\\NVIDIA",
+      "tool": "驱动残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "requiresClosed": [],
+      "note": "NVIDIA 驱动安装包解压残留（非已安装驱动），装完可删。"
+    },
+    {
+      "id": "adobe-media-cache",
+      "path": "%APPDATA%\\Adobe\\Common\\Media Cache",
+      "tool": "Adobe",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "Adobe Media Encoder.exe",
+        "Adobe Premiere Pro.exe",
+        "AfterFX.exe",
+        "Audition.exe",
+        "Premiere Pro.exe"
+      ],
+      "note": "PR/AE 等媒体缓存，工程不受影响，自动重建。"
+    },
+    {
+      "id": "adobe-media-cache-files",
+      "path": "%APPDATA%\\Adobe\\Common\\Media Cache Files",
+      "tool": "Adobe",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "Adobe Media Encoder.exe",
+        "Adobe Premiere Pro.exe",
+        "AfterFX.exe",
+        "Audition.exe",
+        "Premiere Pro.exe"
+      ],
+      "note": "Adobe 媒体缓存文件，自动重建。"
+    },
+    {
+      "id": "my-games",
+      "path": "%USERPROFILE%\\Documents\\My Games",
+      "tool": "游戏存档",
+      "category": "game",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [],
+      "note": "大量单机游戏把存档/配置/截图放这里。是你的游戏进度，不要直接删，建议迁移到其他盘。"
+    },
+    {
+      "id": "steam-screenshots",
+      "path": "C:\\Program Files (x86)\\Steam\\userdata\\*\\760",
+      "tool": "Steam",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "steam",
+        "steamwebhelper"
+      ],
+      "note": "Steam 截图库（F12 截图），删前确认没有要留的。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "notion-app",
+      "path": "%APPDATA%\\Notion",
+      "tool": "Notion",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Notion.exe"
+      ],
+      "note": "Notion 数据目录；子目录中的缓存已单列，可单独清理。"
+    },
+    {
+      "id": "slack-app",
+      "path": "%APPDATA%\\Slack",
+      "tool": "Slack",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "slack.exe"
+      ],
+      "note": "Slack 数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "discord-app",
+      "path": "%APPDATA%\\discord",
+      "tool": "Discord",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Discord.exe"
+      ],
+      "note": "Discord 数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "postman-app",
+      "path": "%APPDATA%\\Postman",
+      "tool": "Postman",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Postman.exe"
+      ],
+      "note": "Postman 数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "obsidian-app",
+      "path": "%APPDATA%\\obsidian",
+      "tool": "Obsidian",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Obsidian.exe"
+      ],
+      "note": "Obsidian 应用数据；缓存子目录已单列。"
+    },
+    {
+      "id": "teams-classic",
+      "path": "%APPDATA%\\Microsoft\\Teams",
+      "tool": "Microsoft Teams",
+      "category": "social",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Teams.exe"
+      ],
+      "note": "经典版 Teams 数据目录；缓存子目录（通常数 GB）已单列。"
+    },
+    {
+      "id": "figma-app",
+      "path": "%APPDATA%\\Figma",
+      "tool": "Figma",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Figma.exe"
+      ],
+      "note": "Figma 桌面端数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "vscode-insiders",
+      "path": "%APPDATA%\\Code - Insiders",
+      "tool": "VS Code Insiders",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "Code - Insiders.exe"
+      ],
+      "note": "VS Code Insiders 数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "wxwork-appdata",
+      "path": "%APPDATA%\\WXWork",
+      "tool": "企业微信",
+      "category": "social",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "WXWork.exe"
+      ],
+      "note": "企业微信应用数据；缓存子目录已单列。"
+    },
+    {
+      "id": "wemeet-app",
+      "path": "%APPDATA%\\Tencent\\WeMeet",
+      "tool": "腾讯会议",
+      "category": "social",
+      "risk": "user-data",
+      "action": "review",
+      "scanHeuristics": true,
+      "requiresClosed": [
+        "wemeetapp.exe"
+      ],
+      "note": "腾讯会议数据目录；缓存子目录已单列。"
+    },
+    {
+      "id": "conda-pkgs",
+      "path": "%USERPROFILE%\\.conda\\pkgs",
+      "tool": "conda",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "conda 装环境时下载的包压缩包缓存，删除后重装会重新下载"
+    },
+    {
+      "id": "conda-pkgs-2",
+      "path": "%USERPROFILE%\\anaconda3\\pkgs",
+      "tool": "Anaconda",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "conda 包下载缓存，删除后重装环境会重新下载"
+    },
+    {
+      "id": "conda-pkgs-3",
+      "path": "%USERPROFILE%\\miniconda3\\pkgs",
+      "tool": "Miniconda",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "conda 包下载缓存，删除后重装环境会重新下载"
+    },
+    {
+      "id": "conda-pkgs-4",
+      "path": "%USERPROFILE%\\miniforge3\\pkgs",
+      "tool": "Miniforge",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "conda 包下载缓存，删除后重装环境会重新下载"
+    },
+    {
+      "id": "conda-install",
+      "path": "%USERPROFILE%\\anaconda3",
+      "tool": "Anaconda",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Python 环境和包本体，开发要用；不用 Python 请走系统卸载",
+      "reportOnly": true
+    },
+    {
+      "id": "conda-install-2",
+      "path": "%USERPROFILE%\\miniconda3",
+      "tool": "Miniconda",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Python 环境和包本体，开发要用；不用请走系统卸载",
+      "reportOnly": true
+    },
+    {
+      "id": "conda-install-3",
+      "path": "%USERPROFILE%\\miniforge3",
+      "tool": "Miniforge",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Python 环境和包本体，开发要用；不用请走系统卸载",
+      "reportOnly": true
+    },
+    {
+      "id": "android-avd",
+      "path": "%USERPROFILE%\\.android\\avd",
+      "tool": "Android Studio",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "安卓模拟器系统镜像，很大；不用模拟器可删，以后在 Device Manager 重建"
+    },
+    {
+      "id": "android-sdk",
+      "path": "%LOCALAPPDATA%\\Android\\Sdk",
+      "tool": "Android Studio",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "SDK 平台与构建工具本体，安卓开发要用；可在 SDK Manager 里卸掉不用的平台",
+      "reportOnly": true,
+      "scanHeuristics": true
+    },
+    {
+      "id": "vbox-vms",
+      "path": "%USERPROFILE%\\VirtualBox VMs",
+      "tool": "VirtualBox",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "虚拟机磁盘和配置，删除即虚拟机没了；建议用 VirtualBox 自带移除",
+      "reportOnly": true,
+      "scanHeuristics": true
+    },
+    {
+      "id": "vmware-vms",
+      "path": "%USERPROFILE%\\Documents\\Virtual Machines",
+      "tool": "VMware",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "虚拟机磁盘和配置，删除即虚拟机没了",
+      "reportOnly": true,
+      "scanHeuristics": true
+    },
+    {
+      "id": "office-filecache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Office\\16.0\\OfficeFileCache",
+      "tool": "Microsoft Office",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "WINWORD",
+        "EXCEL",
+        "POWERPNT",
+        "ONENOTE",
+        "OUTLOOK",
+        "MSOSYNC"
+      ],
+      "note": "Office 文档缓存，含尚未同步到云端的挂起更改。先确认所有 Office 文件已上传再清。"
+    },
+    {
+      "id": "office-filecache-2",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Office\\15.0\\OfficeFileCache",
+      "tool": "Microsoft Office",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "WINWORD",
+        "EXCEL",
+        "POWERPNT",
+        "ONENOTE",
+        "OUTLOOK",
+        "MSOSYNC"
+      ],
+      "note": "Office 文档缓存，含尚未同步到云端的挂起更改。先确认所有 Office 文件已上传再清。"
+    },
+    {
+      "id": "package-cache",
+      "path": "%PROGRAMDATA%\\Package Cache",
+      "tool": "安装包缓存",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "VS/运行库等留下的安装包缓存；修复和更新要用，删了修复时会要求重新下载",
+      "requiresAdmin": true
+    },
+    {
+      "id": "msocache",
+      "path": "C:\\MSOCache",
+      "tool": "Microsoft Office",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Office 安装缓存，修复 Office 时要用；删了以后修复要重新提供安装文件",
+      "requiresAdmin": true
+    },
+    {
+      "id": "win-esd",
+      "path": "C:\\ESD",
+      "tool": "Windows 升级残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "升级/重装 Windows 用的安装文件，系统运行稳定后可删",
+      "requiresAdmin": true
+    },
+    {
+      "id": "win-esd-2",
+      "path": "C:\\$GetCurrent",
+      "tool": "Windows 升级残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Windows 升级日志与安装残留，系统稳定后可删",
+      "requiresAdmin": true
+    },
+    {
+      "id": "win-esd-3",
+      "path": "C:\\$SysReset",
+      "tool": "Windows 升级残留",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "系统重置留下的文件，系统稳定后可删",
+      "requiresAdmin": true
+    },
+    {
+      "id": "nvidia-dl",
+      "path": "%PROGRAMDATA%\\NVIDIA Corporation\\Downloader",
+      "tool": "NVIDIA",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "历年下载的显卡驱动安装包，每个几百 MB。删除会清掉全部（含最新一个），需要重装驱动时会重新下载。",
+      "requiresAdmin": true
+    },
+    {
+      "id": "vsinst-pkgs",
+      "path": "%PROGRAMDATA%\\Microsoft\\VisualStudio\\Packages",
+      "tool": "Visual Studio",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "VS 安装包缓存，修复/更新要用；删了修复时会重新下载全部文件",
+      "requiresAdmin": true
+    },
+    {
+      "id": "vscode-ws",
+      "path": "%APPDATA%\\Code\\User\\workspaceStorage",
+      "tool": "VS Code",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "Code"
+      ],
+      "note": "各项目的编辑器状态（打开的页签、布局），删了重开项目只是重置视图；个别扩展存的工作区数据会丢。"
+    },
+    {
+      "id": "vscode-ws-2",
+      "path": "%APPDATA%\\Code - Insiders\\User\\workspaceStorage",
+      "tool": "VS Code Insiders",
+      "category": "dev",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [
+        "Code - Insiders"
+      ],
+      "note": "同 VS Code：编辑器工作区状态；个别扩展存的工作区数据会丢。"
+    },
+    {
+      "id": "scoop-cache",
+      "path": "%USERPROFILE%\\scoop\\cache",
+      "tool": "Scoop",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "安装包下载缓存，等价于 scoop cache rm *；删了重装时重新下载"
+    },
+    {
+      "id": "cloudmusic",
+      "path": "%LOCALAPPDATA%\\NetEase\\CloudMusic",
+      "tool": "网易云音乐",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "应用数据与设置；Cache 等缓存子目录会被自动识别为可清理",
+      "scanHeuristics": true
+    },
+    {
+      "id": "onedrive",
+      "path": "%USERPROFILE%\\OneDrive",
+      "tool": "OneDrive",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "云端文件的本地副本；省空间用系统「释放空间」功能（右键文件夹），不要直接删",
+      "reportOnly": true,
+      "noMigrate": true
+    },
+    {
+      "id": "onedrive-2",
+      "path": "%USERPROFILE%\\OneDrive - *",
+      "tool": "OneDrive",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "企业版 OneDrive 同步目录，同上",
+      "reportOnly": true,
+      "noMigrate": true
+    },
+    {
+      "id": "unity-locallow",
+      "path": "%USERPROFILE%\\AppData\\LocalLow\\Unity",
+      "tool": "Unity 引擎游戏",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Unity 引擎自家目录（各游戏数据写在 LocalLow\\<公司名>\\ 下）。"
+    },
+    {
+      "id": "mihoyo-locallow",
+      "path": "%USERPROFILE%\\AppData\\LocalLow\\miHoYo",
+      "tool": "米哈游游戏",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "原神/星铁等 Player.log 与崩溃报告，日志可删"
+    },
+    {
+      "id": "mihoyo-locallow-2",
+      "path": "%USERPROFILE%\\AppData\\LocalLow\\HoYoverse",
+      "tool": "HoYoverse 游戏",
+      "category": "game",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "国际服米哈游游戏日志，日志可删"
+    },
+    {
+      "id": "roblox-logs",
+      "path": "%LOCALAPPDATA%\\Roblox\\logs",
+      "tool": "Roblox",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "RobloxPlayerBeta"
+      ],
+      "note": "客户端日志，删了自动重建"
+    },
+    {
+      "id": "u-misc-3dobjects",
+      "path": "%USERPROFILE%\\3D Objects",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "系统预留的 3D 对象目录，多为空；只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "u-misc-music",
+      "path": "%USERPROFILE%\\Music",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "音乐目录；有文件的话属于个人资料，只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "u-misc-links",
+      "path": "%USERPROFILE%\\Links",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "资源管理器收藏夹快捷方式目录，只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "u-misc-fav",
+      "path": "%USERPROFILE%\\Favorites",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "旧版 IE 收藏夹目录，只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "u-misc-contacts",
+      "path": "%USERPROFILE%\\Contacts",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "联系人目录，只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "u-misc-searches",
+      "path": "%USERPROFILE%\\Searches",
+      "tool": "用户文件夹",
+      "category": "user",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "保存的搜索，只统计占用",
+      "reportOnly": true
+    },
+    {
+      "id": "delivery-opt-real",
+      "path": "%PROGRAMDATA%\\Microsoft\\Windows\\DeliveryOptimization\\Cache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresAdmin": true,
+      "note": "分发优化下载缓存（ProgramData 侧），删除后自动重建。"
+    },
+    {
+      "id": "wer-user",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WER\\ReportQueue",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "note": "用户级 Windows 错误报告队列，上报后自动重建。"
+    },
+    {
+      "id": "wer-user-arc",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WER\\ReportArchive",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "note": "用户级错误报告存档，可安全删除。"
+    },
+    {
+      "id": "teams-new-cache",
+      "path": "%LOCALAPPDATA%\\Packages\\MSTeams_8wekyb3d8bbwe\\LocalCache\\*",
+      "tool": "Microsoft Teams",
+      "category": "social",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [
+        "ms-teams",
+        "Teams"
+      ],
+      "note": "新版 Teams 本地缓存（含 WebView 数据和可能的登录态缓存）。删除后需要重新登录、设置可能重置。不进自动清理。"
+    },
+    {
+      "id": "wsl-new",
+      "path": "%LOCALAPPDATA%\\wsl\\*",
+      "matchFile": "*.vhdx",
+      "tool": "WSL 发行版",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "wsl",
+        "wslservice",
+        "vmmem",
+        "wslhost"
+      ],
+      "note": "新格式 WSL 发行版虚拟磁盘，可整体迁到其他盘。"
+    },
+    {
+      "id": "nuget-v3cache",
+      "path": "%LOCALAPPDATA%\\NuGet\\v3-cache",
+      "tool": "NuGet",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "NuGet HTTP 缓存，自动重建。"
+    },
+    {
+      "id": "nuget-plugins",
+      "path": "%LOCALAPPDATA%\\NuGet\\plugins-cache",
+      "tool": "NuGet",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "NuGet 插件缓存，自动重建。"
+    },
+    {
+      "id": "cargo-src",
+      "path": "%USERPROFILE%\\.cargo\\registry\\src",
+      "tool": "Cargo",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "Cargo 解压后的 crate 源码，构建时按需重新解压。"
+    },
+    {
+      "id": "cargo-index",
+      "path": "%USERPROFILE%\\.cargo\\registry\\index",
+      "tool": "Cargo",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "Cargo 索引缓存，自动重建。"
+    },
+    {
+      "id": "gradle-dists",
+      "path": "%USERPROFILE%\\.gradle\\wrapper\\dists",
+      "tool": "Gradle",
+      "category": "dev",
+      "risk": "caution",
+      "action": "delete",
+      "note": "Gradle wrapper 下载的发行版（每个 ~200MB），删除后构建时重新下载。"
+    },
+    {
+      "id": "yarn-berry",
+      "path": "%LOCALAPPDATA%\\Yarn\\Berry\\cache",
+      "tool": "yarn",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "Yarn Berry 缓存，自动重建。"
+    },
+    {
+      "id": "pnpm-store-home",
+      "path": "%USERPROFILE%\\.pnpm-store",
+      "tool": "pnpm",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "note": "pnpm 全局 store（旧位置），自动重建。"
+    },
+    {
+      "id": "squirrel-temp",
+      "path": "%LOCALAPPDATA%\\SquirrelTemp",
+      "tool": "Squirrel",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "note": "Squirrel 安装器临时目录残留（Teams/Slack/Discord 等），可安全删除。"
+    },
+    {
+      "id": "vscode-insiders-ext",
+      "path": "%USERPROFILE%\\.vscode-insiders\\extensions",
+      "tool": "VS Code Insiders",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "Code - Insiders"
+      ],
+      "note": "Insiders 扩展本体，可迁到其他盘。"
+    },
+    {
+      "id": "hyperv-vhd",
+      "path": "C:\\Users\\Public\\Documents\\Hyper-V\\Virtual hard disks",
+      "tool": "Hyper-V",
+      "category": "system",
+      "risk": "user-data",
+      "action": "review",
+      "requiresAdmin": true,
+      "note": "Hyper-V 虚拟磁盘，删除前请在 Hyper-V 管理器里确认不再使用。"
+    }
+  ],
+  "heuristics": {
+    "comment": "对没有规则命中的目录按名字猜。命中 deletePatterns => safe/delete; userDataPatterns => user-data/migrate; 否则 review。",
+    "deletePatterns": [
+      "cache",
+      "caches",
+      "gpuCache",
+      "cacheddata",
+      "crashpad",
+      "crashes",
+      "dumps",
+      "logs",
+      "log",
+      "tmp",
+      "temp",
+      "shadercache",
+      "code cache",
+      "service worker"
+    ],
+    "userDataPatterns": [
+      "session",
+      "history",
+      "workspace",
+      "projects",
+      "conversations",
+      "threads",
+      "state",
+      "storage",
+      "data",
+      "files"
+    ],
+    "ignoreNames": [
+      "desktop.ini",
+      "ntuser.dat"
+    ]
+  }
+}
