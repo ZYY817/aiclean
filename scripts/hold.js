@@ -18,6 +18,8 @@ export function initHold() {
     btn.style.setProperty('--hold', p.toFixed(3));
     const lit = Math.round(p * pips.length);
     pips.forEach((el, i) => el.classList.toggle('on', i < lit));
+    // 下载区背景的格子跟着进度亮（main.js 监听）
+    btn.dispatchEvent(new CustomEvent('holdprogress', { detail: p }));
   };
 
   const tick = now => {

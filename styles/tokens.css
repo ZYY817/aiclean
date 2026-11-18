@@ -130,6 +130,15 @@
     --ok: var(--t-ikb-ok);       --warn: var(--t-ikb-warn);
     --sys: var(--t-ikb-sys);     --lock: var(--t-ikb-lock);
   }
+  .theme-fog {
+    --bg: var(--t-fog-bg);       --surface: var(--t-fog-surface);
+    --ink: var(--t-fog-ink);     --ink2: var(--t-fog-ink2);   --ink3: var(--t-fog-ink3);
+    --hair: var(--t-fog-hair);   --rule: var(--t-fog-rule);   --hover: var(--t-fog-hover);
+    --acc: var(--t-fog-acc);     --acc-d: var(--t-fog-accd);  --onacc: var(--t-fog-onacc);
+    --spark: var(--t-fog-spark); --danger: var(--t-fog-danger);
+    --ok: var(--t-fog-ok);       --warn: var(--t-fog-warn);
+    --sys: var(--t-fog-sys);     --lock: var(--t-fog-lock);
+  }
   .theme-ink {
     --bg: var(--t-ink-bg);       --surface: var(--t-ink-surface);
     --ink: var(--t-ink-ink);     --ink2: var(--t-ink-ink2);   --ink3: var(--t-ink-ink3);
@@ -147,4 +156,7 @@
   @property --my   { syntax: "<length-percentage>"; inherits: true; initial-value: 50%; }
   /* --hold 写在按钮上、被填充层子元素 var() 读取 → 必须可继承 */
   @property --hold { syntax: "<number>"; inherits: true; initial-value: 0; }
+  /* 格子 transform 链里需要平滑过渡的因子：--fc 类聚焦放大、--fs 闪缩 */
+  @property --fc   { syntax: "<number>"; inherits: true; initial-value: 1; }
+  @property --fs   { syntax: "<number>"; inherits: true; initial-value: 1; }
 }

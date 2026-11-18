@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AIClean · C 盘空间管家 — 把 C 盘的每个格子看明白</title>
-  <meta name="description" content="AIClean 扫描整盘占用、分类清理缓存、把大体积数据迁到其他盘。免费开源，完全本地运行。Windows 10/11 64 位，单文件 4.6 MB。">
+  <title>AIClean · 面向 AI 应用的 C 盘清理工具</title>
+  <meta name="description" content="AIClean 扫描整盘占用，把 C 盘画成 198 个格子：缓存按住清理，各家 AI 应用的对话记录、模型文件原路径迁往其他盘。免费，开源，不联网。Windows 10/11 64 位，单文件 4.6 MB。">
   <meta name="theme-color" content="#121516">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <!-- 主题引导：在 CSS 生效前从 localStorage / URL 参数恢复主题，避免闪烁 -->
@@ -43,7 +43,7 @@
       </a>
       <nav class="nav__links" aria-label="页面导航">
         <a href="#features">功能</a>
-        <a href="#how">怎么工作</a>
+        <a href="#themes">配色</a>
         <a href="#safety">安全</a>
         <a href="#download">下载</a>
       </nav>
@@ -58,335 +58,288 @@
     </div>
   </header>
 
-  <main id="top">
+  <main>
 
-    <!-- ======================= HERO ======================= -->
-    <section class="hero" aria-labelledby="hero-t">
-      <div class="wrap hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow"><span class="eyebrow__fig">FIG 0.1</span>AICLEAN · C 盘空间管家 · v1.0.0</p>
-          <h1 class="h1" id="hero-t"><span class="hw" style="--i:0">把</span> <span class="hw" style="--i:1">C 盘的</span> <span class="hw" style="--i:2">每个格子</span><br><span class="hw dim" style="--i:3">都</span><span class="hw dim" style="--i:4">看明白</span></h1>
-          <p class="hero__sub">扫描整盘占用、分类清理缓存、把大体积数据迁到其他盘。免费开源，完全本地运行。</p>
-          <div class="hero__ctas">
-            <a class="btn btn--solid" href="https://github.com/ZYY817/aiclean/releases/latest">免费下载</a>
-            <a class="tlink" href="https://github.com/ZYY817/aiclean">查看源码 <span class="arr" aria-hidden="true">→</span></a>
-          </div>
-          <p class="hero__meta mono"><span>Windows 10/11 64 位</span><span>单文件 4.6 MB</span><span>不联网</span></p>
+    <!-- ======================= 屏 1 · 这是什么（不钉住） =======================
+         访客不滚动就要知道：这是什么软件，长什么样，在哪下载。 -->
+    <section class="hero" id="top" aria-labelledby="hero-t">
+      <div class="gridbg" id="gridbg" aria-hidden="true"></div>
+      <div class="hero__in">
+        <p class="hero__eyebrow mono">AIClean · Windows C 盘清理工具</p>
+        <h1 class="h1" id="hero-t">面向 AI 应用的 C 盘清理工具。</h1>
+        <p class="hero__d">扫描整盘占用，画成 198 个格子。缓存按住清理；各家 AI 应用的对话记录、模型文件，原路径迁往其他盘。</p>
+        <div class="hero__ctas">
+          <a class="btn btn--solid" href="https://github.com/ZYY817/aiclean/releases/latest">免费下载</a>
+          <a class="tlink" href="https://github.com/ZYY817/aiclean">看源码 <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero__meta mono"><span>Windows 10/11 64 位</span><span>单文件 4.6 MB</span><span>不联网</span></p>
+      </div>
+      <div class="hero__shot" data-scrub="view">
+        <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <img id="heroShot" src="assets/home.png" alt="AIClean 总览页：C 盘占用 96%，198 个格子标出每块空间归属" width="2452" height="1626">
+      </div>
+    </section>
+
+    <!-- ======================= 屏 2 · 三件事（半屏高） ======================= -->
+    <section class="trio" aria-label="它做三件事">
+      <div class="t"><b>看清</b><p>全盘扫描后画成 198 个格子，每一格是谁占的、占了多少，都有标注。</p></div>
+      <div class="t"><b>清掉</b><p>缓存按住即清。清理前先查占用，不影响运行中的软件。</p></div>
+      <div class="t"><b>搬走</b><p>AI 应用的对话记录、模型文件等大文件夹迁往其他盘，原位保留链接，随时可迁回。</p></div>
+    </section>
+
+    <!-- ======================= 屏 2 · 演示（钉住，三步） =======================
+         格子图是主角，固定在屏幕中央。五类占用连成整块，外侧引线标注常驻。
+         第 1 步五类轮流高亮，第 2 步蓝格逐个腾出，第 3 步白格飞进 D 盘。 -->
+    <section class="demo" id="demo" data-scrub="pin" aria-labelledby="demo-t">
+      <div class="demo__stage">
+        <div class="demo__corner">
+          <button class="gbtn" id="autoBtn" type="button">▶ 自动演示</button>
+          <span class="demo__ind mono" id="demoInd">1 / 3</span>
         </div>
 
-        <div class="hero__visual">
-          <figure class="panel" aria-label="C 盘占用格子图演示">
-            <div class="panel__beam" aria-hidden="true"></div>
-            <div class="panel__head">
-              <figcaption class="panel__title">C 盘的 198 个格子</figcaption>
-              <span class="panel__hint">1 格 ≈ 1 GB，鼠标移上去看是谁</span>
-            </div>
-            <div class="gmap" id="gmap" aria-hidden="true"></div>
-            <div class="gtip" id="gtip" aria-hidden="true"></div>
-            <ul class="legend" id="legend">
-              <li data-hit="clean"><i class="sw sw--clean"></i>可清理 <b>172 项 · 18.2 GB</b></li>
-              <li data-hit="move"><i class="sw sw--move"></i>建议迁移 <b>3 项 · 2.89 GB</b></li>
-              <li data-hit="confirm"><i class="sw sw--confirm"></i>待确认 <b>11 项 · 10.8 GB</b></li>
-              <li data-hit="busy"><i class="sw sw--busy"></i>正在使用 <b>40 项 · 6.81 GB</b></li>
-              <li data-hit="stat"><i class="sw sw--stat"></i>仅统计 <b>39 项 · 36.3 GB</b></li>
-            </ul>
-            <div class="panel__noise" aria-hidden="true"></div>
-          </figure>
+        <header class="demo__head">
+          <h2 class="demo__t" id="demo-t">五种格子，对应五种处理方式</h2>
+          <p class="demo__d" id="demoD">AIClean 打开即扫描，扫描结果就画成这张图。</p>
+        </header>
+
+        <div class="gmapwrap" id="gmapwrap">
+          <div class="gmap cells" id="gmap" data-f="" aria-hidden="true"></div>
+          <div class="sheen" id="sheen" aria-hidden="true"></div>
+          <svg class="flypath" id="flypath" aria-hidden="true"></svg>
+          <div class="disk__beam" aria-hidden="true"></div>
+          <div class="gtip" id="gtip" aria-hidden="true"></div>
+
+          <!-- 引线标注：一直在，不淡出。--ty 是标注线在格图里的纵向位置 -->
+          <span class="glabel" data-g="sys"     data-side="r" style="--ty:31.8%">系统占用 <b>114.8 GB</b></span>
+          <span class="glabel" data-g="stat"    data-side="l" style="--ty:68.2%">仅统计 <b>36.3 GB</b></span>
+          <span class="glabel" data-g="clean"   data-side="r" style="--ty:77.3%">可清理 <b>18.2 GB</b></span>
+          <span class="glabel" data-g="busy"    data-side="l" style="--ty:86.4%">正在使用 <b>6.81 GB</b></span>
+          <span class="glabel" data-g="confirm" data-side="r" style="--ty:86.4%">待确认 <b>10.8 GB</b></span>
+          <span class="glabel" data-g="free"    data-side="l" style="--ty:95.5%">空闲 <b>8.32 GB</b></span>
+          <span class="glabel" data-g="move"    data-side="r" style="--ty:95.5%">建议迁移 <b>2.89 GB</b></span>
+
+          <!-- 右侧：累计读数 + D 盘方框 -->
+          <div class="demo__read" id="demoRead"><span class="demo__readl">已腾出</span><b id="freedN">0.0</b><i>GB</i></div>
+          <div class="dbox" id="dbox"><span class="dbox__lbl mono">D 盘</span><div class="dbox__cells"><i></i><i></i><i></i></div></div>
+        </div>
+
+        <!-- 窄屏时的标注（替代引线） -->
+        <div class="demo__chips" id="demoChips" aria-hidden="true">
+          <span data-g="sys">系统 114.8</span><span data-g="stat">统计 36.3</span><span data-g="clean">可清 18.2</span><span data-g="busy">占用 6.81</span><span data-g="confirm">待确认 10.8</span><span data-g="move">迁移 2.89</span>
+        </div>
+
+        <div class="occwrap"><span class="occlab mono">已占用 <b id="occPct">96</b>%</span><div class="occbar"><i id="occFill"></i></div></div>
+
+        <div class="demo__tail" id="demoTail">
+          <button class="gbtn cmpt" id="cmpBtn" type="button"><span class="cmpt__a">清理前</span><i class="cmpt__sw"></i><span class="cmpt__b">清理后</span></button>
+          <p class="demo__result" id="demoRes">这台电脑腾出了 <b>21.1 GB</b>，可用空间从 8.32 GB 变成 29.4 GB</p>
+        </div>
+
+        <!-- 减动效模式：静态前后对比，不播动画 -->
+        <div class="demo__rm">
+          <div class="rmcol"><p class="mono">清理前</p><div class="rmgrid cells" id="rmBefore"></div></div>
+          <div class="rmcol"><p class="mono">清理后</p><div class="rmgrid cells" id="rmAfter"></div></div>
+          <p class="demo__result">这台电脑腾出了 <b>21.1 GB</b>，可用空间从 8.32 GB 变成 29.4 GB</p>
         </div>
       </div>
     </section>
 
-    <!-- ======================= 信任条 ======================= -->
-    <div class="trust" data-rv>
-      <ul class="wrap trust__row" role="list">
-        <li>完全本地运行</li>
-        <li>开源代码可审计</li>
-        <li>不可逆操作按住确认</li>
-        <li>迁移随时可迁回</li>
-        <li>不留残留</li>
-      </ul>
+    <!-- ======================= 屏 4 · 六个功能（正常滚动，卡片堆叠） ======================= -->
+    <section class="feats" id="features" aria-labelledby="feat-t">
+      <h2 class="feats__t" id="feat-t">六项功能</h2>
+      <div class="feats__stack">
+
+        <article class="fcard" style="--i:0">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">01</span>
+            <h3 class="fcard__t">格子地图</h3>
+            <p class="fcard__d">整块盘画成一张图，一格约 1 GB。指针停在任意一格，即显示其归属软件与占用大小。</p>
+            <div class="fcard__viz"><div class="cardmap" id="cardmap" aria-hidden="true"></div></div>
+          </div>
+        </article>
+
+        <article class="fcard" style="--i:1">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">02</span>
+            <h3 class="fcard__t">分类清理</h3>
+            <p class="fcard__d">内置 228 条规则，覆盖各家 AI 应用、开发环境和常见软件的缓存位置；未收录的 Electron 应用自动补查。300 MB 以上大文件单独列出，重复文件按指纹比对。</p>
+            <div class="fcard__viz">
+              <div class="rows mono" aria-hidden="true">
+                <div><span>NVIDIA DXCache</span><b>10.5 GB</b></div>
+                <div><span>DirectX 着色器缓存</span><b>4.05 GB</b></div>
+                <div><span>Playwright</span><b>718 MB</b></div>
+                <div><span>Go 编译缓存</span><b>358 MB</b></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="fcard" style="--i:2">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">03</span>
+            <h3 class="fcard__t">迁移</h3>
+            <p class="fcard__d">AI 应用的对话记录、模型文件等大文件夹迁往其他盘，对软件而言路径始终不变。迁移分复制、校验、备份、建链接、验证五步，任何一步出错自动还原。</p>
+            <div class="fcard__viz"><ol class="chain mono" aria-hidden="true"><li>复制</li><li>校验</li><li>备份</li><li>建链接</li><li>验证</li></ol></div>
+          </div>
+        </article>
+
+        <article class="fcard" style="--i:3">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">04</span>
+            <h3 class="fcard__t">定时清理</h3>
+            <p class="fcard__d">基于 Windows 计划任务，仅清理低风险缓存，周期自定。开启时会先弹窗列出将清理的内容。</p>
+            <div class="fcard__viz"><div class="switch mono" aria-hidden="true"><span>定时清理</span><i></i><b>默认关闭</b></div></div>
+          </div>
+        </article>
+
+        <article class="fcard" style="--i:4">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">05</span>
+            <h3 class="fcard__t">残留区和日志</h3>
+            <p class="fcard__d">暂时无法删除的文件先进入残留区，可重试、可恢复，逾期自动清除。每一次操作均写入日志。</p>
+            <div class="fcard__viz">
+              <div class="rows mono" aria-hidden="true">
+                <div><span>清理</span><b>已记录</b></div>
+                <div><span>迁移</span><b>已记录</b></div>
+                <div><span>迁回</span><b>已记录</b></div>
+                <div><span>删除备份</span><b>已记录</b></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="fcard" style="--i:5">
+          <div class="fcard__in">
+            <span class="fcard__no mono" aria-hidden="true">06</span>
+            <h3 class="fcard__t">卸载</h3>
+            <p class="fcard__d">卸载时一并移除自身创建的内容。选择保留的数据会在桌面生成清单，标明存放位置。</p>
+            <div class="fcard__viz"><ul class="gone mono" aria-hidden="true"><li>计划任务</li><li>开机自启</li><li>数据目录</li><li>注册表项</li></ul></div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ======================= 字带 ======================= -->
+    <div class="band" data-scrub="view" aria-label="228 条规则，单文件 4.6 MB，0 次联网，源码公开">
+      <p class="band__row band__row--a" aria-hidden="true">228 条规则<i></i>4.6 MB<i></i>0 次联网<i></i>源码公开<i></i>228 条规则<i></i>4.6 MB<i></i>0 次联网<i></i>源码公开</p>
+      <p class="band__row band__row--b" aria-hidden="true">按住才删<i></i>搬走能搬回<i></i>不用安装<i></i>按住才删<i></i>搬走能搬回<i></i>不用安装<i></i>按住才删</p>
     </div>
 
-    <!-- ======================= 四步流程 ======================= -->
-    <section class="section" id="how" aria-labelledby="how-t">
-      <div class="wrap">
-        <header class="section__head" data-rv>
-          <p class="kicker">01 · HOW IT WORKS</p>
-          <h2 class="h2" id="how-t">四步，从爆满到<em>清爽</em></h2>
-        </header>
-        <div class="steps__body">
-          <div class="steps__list" id="stepsList">
-            <div class="steps__rail" aria-hidden="true"></div>
-            <article class="step" data-step="0">
-              <p class="step__no">STEP 01</p>
-              <h3 class="step__t">扫描整盘</h3>
-              <p class="step__d">启动即自动扫描，格子图实时画出谁占了空间。识别不出的也标注"未识别"，不会漏报。</p>
-            </article>
-            <article class="step" data-step="1">
-              <p class="step__no">STEP 02</p>
-              <h3 class="step__t">分类建议</h3>
-              <p class="step__d">每一项标注可清理 / 建议迁移 / 待确认 / 正在使用 / 仅统计，并写清"这是什么、删了会怎样"。</p>
-            </article>
-            <article class="step" data-step="2">
-              <p class="step__no">STEP 03</p>
-              <h3 class="step__t">按住清理</h3>
-              <p class="step__d">缓存按住即清，软件会自动重建；大体积数据一键迁到其他盘，原位置留链接，照常使用。</p>
-            </article>
-            <article class="step" data-step="3">
-              <p class="step__no">STEP 04</p>
-              <h3 class="step__t">空间回归</h3>
-              <p class="step__d">清完的格子变回可用色。清理、迁移、迁回全部记入操作日志，随时回查。</p>
-            </article>
+    <!-- ======================= 屏 4 · 主题从中心扩散 =======================
+         三套主题用 clip-path 圆从屏幕中心扩散重上色；
+         截图居中跟鼠标轻斜，巨型主题名垫在后面。 -->
+    <section class="faces" id="themes" data-scrub="pin" aria-labelledby="themes-t">
+      <h2 class="sr-only" id="themes-t">三套配色：雾白、克莱因蓝、夜墨</h2>
+      <div class="faces__stage">
+
+        <div class="face theme-fog" data-face="0">
+          <span class="face__big" aria-hidden="true">雾白</span>
+          <div class="win"><div class="win__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/home.png" alt="AIClean 雾白主题的总览页" width="2452" height="1626">
           </div>
-          <div class="steps__sticky">
-            <div class="stepviz" id="stepviz" aria-hidden="true">
-              <!-- pane 1 · 扫描 -->
-              <div class="stepviz__pane is-on" data-pane="0">
-                <p class="stepviz__cap">SCANNING C:\</p>
-                <div class="minimap" id="minimap1"></div>
-                <p class="pane1__pct">96<i>%</i></p>
-                <p class="pane3__note">已用 189.8 GB · 共 198.2 GB</p>
-              </div>
-              <!-- pane 2 · 分类 -->
-              <div class="stepviz__pane" data-pane="1">
-                <p class="stepviz__cap">CLASSIFY · 226 项</p>
-                <div class="catlist">
-                  <div class="catlist__row"><i class="sw sw--clean"></i><span class="nm">可清理</span><span class="ds">缓存，删了会自动重建</span><span class="sz">18.2 GB</span></div>
-                  <div class="catlist__row"><i class="sw sw--move"></i><span class="nm">建议迁移</span><span class="ds">搬到其他盘，照常使用</span><span class="sz">2.89 GB</span></div>
-                  <div class="catlist__row"><i class="sw sw--confirm"></i><span class="nm">待确认</span><span class="ds">需要你看一眼</span><span class="sz">10.8 GB</span></div>
-                  <div class="catlist__row"><i class="sw sw--busy"></i><span class="nm">正在使用</span><span class="ds">关掉程序后可处理</span><span class="sz">6.81 GB</span></div>
-                  <div class="catlist__row"><i class="sw sw--stat"></i><span class="nm">仅统计</span><span class="ds">只汇总占用</span><span class="sz">36.3 GB</span></div>
-                </div>
-              </div>
-              <!-- pane 3 · 按住清理 -->
-              <div class="stepviz__pane" data-pane="2">
-                <p class="stepviz__cap">PRESS &amp; HOLD</p>
-                <div class="mockhold">
-                  <span class="mockhold__fill"></span>
-                  <span class="mockhold__label">按住，开始清理</span>
-                  <span class="mockhold__size">18.2 GB</span>
-                  <span class="mockhold__pips"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i></span>
-                </div>
-                <p class="pane3__note">松开即取消 —— 不可逆操作都长这样</p>
-              </div>
-              <!-- pane 4 · 空间回归 -->
-              <div class="stepviz__pane" data-pane="3">
-                <p class="stepviz__cap">DONE · LOGGED</p>
-                <div class="minimap" id="minimap2"></div>
-                <div class="loglines">
-                  <div class="row"><span class="t">22:41:07</span><b>+10.5 GB</b><span>已清理 NVIDIA DXCache</span></div>
-                  <div class="row"><span class="t">22:41:09</span><b>+4.05 GB</b><span>已清理 DirectX 着色器缓存</span></div>
-                  <div class="row"><span class="t">22:41:12</span><b>+2.88 GB</b><span>已迁移 HuggingFace 模型 → D 盘</span></div>
-                </div>
-              </div>
-            </div>
+          <div class="face__txt">
+            <p class="face__k mono">配色 1 / 3</p>
+            <p class="face__t">雾白</p>
+            <p class="face__d">明亮的日间主题，长时间使用不刺眼。</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ======================= BENTO 功能 ======================= -->
-    <section class="section section--tight" id="features" aria-labelledby="feat-t">
-      <div class="wrap">
-        <header class="section__head" data-rv>
-          <p class="kicker">02 · FEATURES</p>
-          <h2 class="h2" id="feat-t">功能做硬，<em>不做多</em></h2>
-          <p class="section__sub">围绕 C 盘空间这一件事：看得清、清得掉、迁得走、查得回。</p>
-        </header>
-        <div class="grid12 bento">
-          <article class="card card--w8" data-rv>
-            <p class="card__no">F.01</p>
-            <h3 class="card__t">格子地图 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">整盘占用画成格子图，一格约 1 GB。谁占了多少、是什么性质，颜色直接告诉你；鼠标悬停看归属应用和体积。</p>
-            <div class="card__viz"><div class="cardmap" id="cardmap" aria-hidden="true"></div></div>
-            <div class="card__tags"><span class="tag">198 格 / 整盘</span><span class="tag">悬停看归属</span><span class="tag">占用排行</span></div>
-          </article>
-          <article class="card card--w4" data-rv style="--rvd:80ms">
-            <p class="card__no">F.02</p>
-            <h3 class="card__t">分类清理 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">228 条内置规则打底；规则库之外的 Electron 缓存启发式发现；≥300MB 大文件猎手，含重复文件指纹比对。</p>
-            <div class="card__tags"><span class="tag">228+ 规则</span><span class="tag">启发式发现</span><span class="tag">指纹比对</span></div>
-          </article>
-          <article class="card" data-rv>
-            <p class="card__no">F.03</p>
-            <h3 class="card__t">无损迁移 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">复制 → 校验 → 备份 → 建 Junction → 验证，五步任一失败自动还原。对软件来说路径没变，随时一键迁回。</p>
-            <div class="card__tags"><span class="tag">Junction 链接</span><span class="tag">先备份再迁</span><span class="tag">可逆</span></div>
-          </article>
-          <article class="card" data-rv style="--rvd:80ms">
-            <p class="card__no">F.04</p>
-            <h3 class="card__t">定时清理 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">接 Windows 计划任务，只清低风险缓存，频率可设。默认关闭，开启时会先弹窗说明清理范围。</p>
-            <div class="card__tags"><span class="tag">计划任务</span><span class="tag">默认关闭</span></div>
-          </article>
-          <article class="card" data-rv>
-            <p class="card__no">F.05</p>
-            <h3 class="card__t">残留与日志 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">删不掉的进残留区，可重试可恢复，超期自动清除。清理、迁移、迁回、删备份——每次操作全量留痕。</p>
-            <div class="card__tags"><span class="tag">残留区</span><span class="tag">操作日志</span></div>
-          </article>
-          <article class="card" data-rv style="--rvd:80ms">
-            <p class="card__no">F.06</p>
-            <h3 class="card__t">彻底卸载 <span class="arr" aria-hidden="true">↗</span></h3>
-            <p class="card__d">自移除计划任务、开机自启、数据目录与注册表残留。选择保留的数据生成桌面清单，注明位置。</p>
-            <div class="card__tags"><span class="tag">自移除</span><span class="tag">桌面清单</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= 数字区 ======================= -->
-    <section class="section section--tight" id="numbers" aria-labelledby="num-t">
-      <div class="wrap">
-        <header class="section__head" data-rv>
-          <p class="kicker">03 · NUMBERS</p>
-          <h2 class="h2" id="num-t">几个<em>硬指标</em></h2>
-        </header>
-        <div class="stats">
-          <div class="stat" data-rv>
-            <p class="stat__n"><span class="cnt" data-n="228">228</span><small>+</small></p>
-            <p class="stat__l">内置清理规则</p>
-            <p class="stat__d">还可用 rules.json 自定义，自有规则优先生效</p>
+        <div class="face theme-ikb" data-face="1">
+          <span class="face__big" aria-hidden="true">克莱因蓝</span>
+          <div class="win"><div class="win__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/home-ikb.png" alt="AIClean 克莱因蓝主题的总览页" width="2452" height="1626">
           </div>
-          <div class="stat" data-rv style="--rvd:80ms">
-            <p class="stat__n"><span class="cnt" data-n="300">300</span><small>MB+</small></p>
-            <p class="stat__l">大文件猎手阈值</p>
-            <p class="stat__d">超过即被盯上，重复文件按内容指纹比对</p>
-          </div>
-          <div class="stat" data-rv style="--rvd:160ms">
-            <p class="stat__n"><span class="cnt" data-n="3">3</span></p>
-            <p class="stat__l">套界面主题</p>
-            <p class="stat__d">雾白 / 克莱因蓝 / 夜墨，软件里随时换</p>
-          </div>
-          <div class="stat" data-rv style="--rvd:240ms">
-            <p class="stat__n"><span class="cnt" data-n="0">0</span></p>
-            <p class="stat__l">次联网请求</p>
-            <p class="stat__d">完全本地运行，不收集任何数据</p>
+          <div class="face__txt">
+            <p class="face__k mono">配色 2 / 3</p>
+            <p class="face__t">克莱因蓝</p>
+            <p class="face__d">整屏深蓝底，重点信息以荧光黄标出。</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ======================= 三主题展示（锁 ikb） ======================= -->
-    <section class="section themes theme-ikb" id="themes" aria-labelledby="themes-t">
-      <div class="wrap">
-        <header class="section__head section__head--center" data-rv>
-          <p class="kicker">04 · THEMES</p>
-          <h2 class="h2" id="themes-t">一套界面，三副面孔</h2>
-          <p class="section__sub">雾白护眼 / 克莱因蓝 / 夜墨，软件里随时换。</p>
-        </header>
-        <div class="themes__row">
-          <figure class="wincap" data-rv="zoom">
-            <div class="win">
-              <div class="win__bar" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 64 64"><rect x="5" y="5" width="25" height="25" rx="5" fill="var(--ink)"/><rect x="34" y="5" width="25" height="25" rx="5" fill="var(--acc)"/><rect x="5" y="34" width="25" height="25" rx="5" fill="none" stroke="var(--ink)" stroke-width="4"/><rect x="34" y="34" width="25" height="25" rx="5" fill="var(--ink)"/></svg>
-                <span class="win__tabs"><i></i><i></i><i></i></span>
-                <span class="win__ctl"><i></i><i></i><i></i></span>
-              </div>
-              <img src="assets/home.png" alt="AIClean 雾白主题：总览页，96% 占用与格子地图" width="1226" height="813" loading="lazy">
-            </div>
-            <figcaption class="wincap__name"><i style="--_sw: var(--t-fog-bg)"></i>FOG · 雾白</figcaption>
-          </figure>
-          <figure class="wincap" data-rv="zoom" style="--rvd:120ms">
-            <div class="win">
-              <div class="win__bar" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 64 64"><rect x="5" y="5" width="25" height="25" rx="5" fill="var(--ink)"/><rect x="34" y="5" width="25" height="25" rx="5" fill="var(--acc)"/><rect x="5" y="34" width="25" height="25" rx="5" fill="none" stroke="var(--ink)" stroke-width="4"/><rect x="34" y="34" width="25" height="25" rx="5" fill="var(--ink)"/></svg>
-                <span class="win__tabs"><i></i><i></i><i></i></span>
-                <span class="win__ctl"><i></i><i></i><i></i></span>
-              </div>
-              <img src="assets/data.png" alt="AIClean 克莱因蓝主题：数据列表页，逐项标注处理建议" width="1226" height="813" loading="lazy">
-            </div>
-            <figcaption class="wincap__name"><i style="--_sw: var(--t-ikb-bg)"></i>IKB · 克莱因蓝</figcaption>
-          </figure>
-          <figure class="wincap" data-rv="zoom" style="--rvd:240ms">
-            <div class="win">
-              <div class="win__bar" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 64 64"><rect x="5" y="5" width="25" height="25" rx="5" fill="var(--ink)"/><rect x="34" y="5" width="25" height="25" rx="5" fill="var(--acc)"/><rect x="5" y="34" width="25" height="25" rx="5" fill="none" stroke="var(--ink)" stroke-width="4"/><rect x="34" y="34" width="25" height="25" rx="5" fill="var(--ink)"/></svg>
-                <span class="win__tabs"><i></i><i></i><i></i></span>
-                <span class="win__ctl"><i></i><i></i><i></i></span>
-              </div>
-              <img src="assets/home-ink.png" alt="AIClean 夜墨主题：总览页深色版" width="1226" height="813" loading="lazy">
-            </div>
-            <figcaption class="wincap__name"><i style="--_sw: var(--t-ink-bg)"></i>INK · 夜墨</figcaption>
-          </figure>
+        <div class="face theme-ink" data-face="2">
+          <span class="face__big" aria-hidden="true">夜墨</span>
+          <div class="win"><div class="win__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/home-ink.png" alt="AIClean 夜墨主题的总览页" width="2452" height="1626">
+          </div>
+          <div class="face__txt">
+            <p class="face__k mono">配色 3 / 3</p>
+            <p class="face__t">夜墨</p>
+            <p class="face__d">适合夜间使用。本页右上角三个小方块可同步换色。</p>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ======================= 安全机制 ======================= -->
-    <section class="section" id="safety" aria-labelledby="safe-t">
-      <div class="wrap split">
-        <header class="section__head" data-rv>
-          <p class="kicker">05 · SAFETY</p>
-          <h2 class="h2" id="safe-t">为什么敢让它<em>动你的 C 盘</em></h2>
-          <p class="section__sub">所有不可逆操作都有前置确认和回退路径；删不掉的、看不准的，宁可不碰。</p>
-        </header>
-        <ol class="safety__list" role="list">
-          <li data-rv>
-            <span class="no">01</span><span class="t">按住数秒确认</span>
-            <span class="d">直接删除、清空回收站、删迁移备份等不可逆操作，都要按住按钮数秒才执行，松手即取消。</span>
-          </li>
-          <li data-rv>
-            <span class="no">02</span><span class="t">删前复查占用</span>
-            <span class="d">删除和迁移前检查目标是否被进程占用，被占用的自动跳过，等程序关闭再处理。</span>
-          </li>
-          <li data-rv>
-            <span class="no">03</span><span class="t">迁移五步走</span>
-            <span class="d">复制 → 校验 → 备份 → 建链接 → 验证，任一步失败自动还原，原数据始终不动。</span>
-          </li>
-          <li data-rv>
-            <span class="no">04</span><span class="t">三重校验再删备份</span>
-            <span class="d">删除迁移备份前校验链接指向与目标数据完整性，通不过不删。</span>
-          </li>
-          <li data-rv>
-            <span class="no">05</span><span class="t">首次启动必读</span>
-            <span class="d">第一次运行先弹使用说明，把所有不可恢复的操作列清楚，再让你动手。</span>
-          </li>
-          <li data-rv>
-            <span class="no">06</span><span class="t">只碰本轮扫到的路径</span>
-            <span class="d">操作范围严格限于本次扫描结果，不临时扩大，不碰计划外目录。</span>
-          </li>
-        </ol>
-      </div>
+    <!-- ======================= 屏 7 · 安全（正常滚动，居中竖排） ======================= -->
+    <section class="safe" id="safety" aria-labelledby="safe-t">
+      <h2 class="safe__t" id="safe-t">凭什么敢让它动 C 盘</h2>
+      <ol class="safe__list" id="safeSeq">
+        <li class="safe__item">
+          <h3 class="safe__big">按住几秒才执行</h3>
+          <p class="safe__d">直接删除、清空回收站、删除迁移备份均不可恢复，按钮须按住数秒方生效，中途松手即取消。</p>
+        </li>
+        <li class="safe__item">
+          <h3 class="safe__big">动手前先查占用</h3>
+          <p class="safe__d">删除与迁移之前先检测目标是否被程序占用，占用中的跳过，待程序关闭后再处理。</p>
+        </li>
+        <li class="safe__item">
+          <h3 class="safe__big">迁移失败自动还原</h3>
+          <p class="safe__d">迁移分复制、校验、备份、建链接、验证五步，任一步失败均自动回退，原数据不受损。</p>
+        </li>
+        <li class="safe__item">
+          <h3 class="safe__big">删备份前先校验</h3>
+          <p class="safe__d">删除迁移备份前，先确认链接指向正确、目标数据完整，任一校验不通过则不执行。</p>
+        </li>
+        <li class="safe__item">
+          <h3 class="safe__big">首次运行先看说明</h3>
+          <p class="safe__d">首次运行会先弹出使用说明，明确列出不可恢复的操作，阅读后再开始使用。</p>
+        </li>
+        <li class="safe__item">
+          <h3 class="safe__big">只动本轮扫描结果</h3>
+          <p class="safe__d">可操作范围仅限当次扫描出的目录，过程中不会临时增加其他路径。</p>
+        </li>
+      </ol>
     </section>
 
-    <!-- ======================= 下载 ======================= -->
-    <section class="section dl" id="download" aria-labelledby="dl-t">
-      <div class="wrap">
-        <p class="kicker" style="justify-content:center" data-rv>06 · DOWNLOAD</p>
-        <h2 class="h2" id="dl-t" data-rv>现在，让 C 盘<em>喘口气</em></h2>
-        <p class="dl__meta mono" data-rv>v1.0.0 · 免费开源 · 下载即用，无需安装</p>
+    <!-- ======================= 屏 6 · 下载：清空的盘 ======================= -->
+    <section class="dl" id="download" aria-labelledby="dl-t">
+      <div class="dl__grid cells" id="dlgrid" aria-hidden="true"></div>
+      <div class="dl__in">
+        <h2 class="dl__t" id="dl-t" data-rv>4.6 MB，<br>下完双击就能用。</h2>
+        <p class="dl__meta mono" data-rv>v1.0.0 · 免费 · 开源 · 不用安装</p>
         <div class="holdzone" data-rv>
           <a class="holdbtn" id="holdbtn" href="https://github.com/ZYY817/aiclean/releases/latest"
              aria-label="按住约一秒下载 AIClean" data-hold="650">
             <span class="holdbtn__fill" aria-hidden="true"></span>
             <span class="holdbtn__label">按住，下载</span>
-            <span class="holdbtn__hint">HOLD 0.65s</span>
+            <span class="holdbtn__hint">和软件里一样</span>
             <span class="holdbtn__pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </a>
-          <p class="dl__alt">或 <a href="https://github.com/ZYY817/aiclean/releases/latest">点击直接打开 Releases 页面</a></p>
+          <p class="dl__alt">也可以直接前往 <a href="https://github.com/ZYY817/aiclean/releases/latest">Releases 页面</a> 下载。</p>
         </div>
-        <p class="dl__sys mono" data-rv><span>AIClean.exe</span><span>4.6 MB</span><span>Windows 10/11 64 位</span><span>免安装</span><span>需要时提示提权</span></p>
+        <p class="dl__sys mono" data-rv><span>AIClean.exe</span><span>Windows 10/11 64 位</span><span>需要管理员权限时会提示</span></p>
       </div>
     </section>
   </main>
 
   <!-- ======================= 页脚（锁 ink） ======================= -->
-  <footer class="footer theme-ink">
+  <footer class="footer theme-ink" data-scrub="view">
     <div class="wrap">
       <div class="footer__top">
-        <p class="footer__slogan">清理的是缓存，留住的是数据。</p>
+        <p class="footer__slogan">使用中遇到问题，可以到 B 站给 UP 主留言。</p>
         <div class="footer__author">
           <p class="name">智宇丶817</p>
-          <p class="role">B 站 UP 主 · 分享资源软件与问题解决方案</p>
+          <p class="role">B 站 UP 主，分享软件和问题解决办法</p>
           <a href="https://space.bilibili.com/41173761">space.bilibili.com/41173761 →</a>
         </div>
       </div>
       <div class="footer__bar">
-        <span>© 2026 AIClean · 免费开源</span>
+        <span>© 2026 AIClean</span>
         <span class="spacer"></span>
-        <a href="https://github.com/ZYY817/aiclean">源码 GitHub</a>
-        <a href="https://github.com/ZYY817/aiclean/releases/latest">Releases 下载</a>
+        <a href="https://github.com/ZYY817/aiclean">GitHub 源码</a>
+        <a href="https://github.com/ZYY817/aiclean/releases/latest">Releases</a>
         <a href="#top">回到顶部 ↑</a>
       </div>
     </div>

@@ -1,88 +1,103 @@
 /* ============================================================
-   layout · 容器 / 栅格 / section 间距
+   layout · 中轴构图骨架
+   原则：所有区块以屏幕中轴为准。背景和图形铺满整个视口，
+   文字集中在中轴一条窄栏。不用左右分栏，不用卡片栅格。
    ============================================================ */
 @layer layout {
 
-  .wrap {
-    max-width: var(--wrap);
-    margin-inline: auto;
-    padding-inline: 24px;
+  /* ---------- 钉子舞台 ----------
+     只有两处钉住：演示区（demo）和主题区（faces）。
+     data-scrub="pin" 的 section 比视口高，里面的 __stage
+     sticky 一屏，滚动进度 --p 由 scroll.js 提供 */
+  .demo__stage,
+  .faces__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
   }
 
-  /* 各区块统一呼吸节奏 */
-  .section {
-    padding-block: clamp(88px, 12vw, 148px);
+  .demo  { height: 264vh; }  /* 滚动距离 1.64 屏，≤3 屏 */
+  .faces { height: 206vh; }  /* 滚动距离 1.06 屏，≤2 屏 */
+
+  /* 减动效：演示区解钉，直接显示静态对比图（由 components.css 控制显隐） */
+  @media (prefers-reduced-motion: reduce) {
+    .demo { height: auto; }
+    .demo__stage { position: relative; height: auto; overflow: visible; }
+  }
+
+  /* ---------- 铺满视口的格子底 ---------- */
+  .cells {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    grid-template-rows: repeat(11, 1fr);
+    gap: clamp(3px, .55vw, 9px);
+  }
+  /* 竖屏转 11×18 */
+  @media (max-aspect-ratio: 1/1) {
+    .cells {
+      grid-template-columns: repeat(11, 1fr);
+      grid-template-rows: repeat(18, 1fr);
+    }
+  }
+
+  .gmap {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cell {
+    border-radius: clamp(2px, .3vw, 6px);
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* 主题屏三层脸叠在同一格 */
+  .faces__stage { display: grid; place-items: center; }
+  .face {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ---------- 下载屏 ---------- */
+  .dl {
     position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
   }
-  .section--tight { padding-block: clamp(56px, 8vw, 96px); }
-
-  .section__head {
-    max-width: 640px;
-    margin-bottom: clamp(40px, 6vw, 72px);
+  .dl__grid {
+    position: absolute;
+    inset: 0;
+    padding: clamp(8px, 1.4vmin, 20px);
+    z-index: 0;
   }
-  .section__head--center {
-    margin-inline: auto;
+  .dl__in {
+    position: relative;
+    z-index: 2;
     text-align: center;
+    width: min(92vw, 44em);
   }
 
-  /* 区块眉题：mono 编号 + 分类词 */
-  .kicker {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .kicker::before {
-    content: "";
-    width: 22px; height: 1px;
-    background: var(--rule);
-  }
-  .section__head--center .kicker { justify-content: center; }
-  .section__head--center .kicker::after {
-    content: "";
-    width: 22px; height: 1px;
-    background: var(--rule);
-  }
-
-  .h2 {
-    font-size: clamp(30px, 4.6vw, 46px);
-    color: var(--ink);
-  }
-  .h2 em { font-style: normal; color: var(--ink3); }
-
-  .section__sub {
-    margin-top: 14px;
-    font-size: 17px;
-    color: var(--ink2);
-    max-width: 52ch;
-  }
-  .section__head--center .section__sub { margin-inline: auto; }
-
-  /* 12 列 bento 栅格 */
-  .grid12 {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 16px;
-  }
-
-  /* 两栏（文/卡）布局 */
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(32px, 6vw, 80px);
-    align-items: start;
-  }
-
+  /* ---------- 窄屏降级：解钉，纵向排 ---------- */
   @media (max-width: 900px) {
-    .split { grid-template-columns: 1fr; }
-    .grid12 { grid-template-columns: repeat(6, 1fr); }
-  }
-  @media (max-width: 600px) {
-    .grid12 { grid-template-columns: 1fr; }
+    .faces { height: auto; }
+    .faces__stage {
+      position: relative;
+      height: auto;
+      overflow: visible;
+      display: block;
+    }
+    .face {
+      height: auto;
+      min-height: 80vh;
+      display: grid;
+      place-items: center;
+      padding: 4vh 0;
+    }
   }
 }

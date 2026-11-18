@@ -40,6 +40,7 @@
     line-height: 1.65;
     color: var(--ink);
     background: var(--bg);
+    font-optical-sizing: auto; /* Segoe Variable 的光学校正：大字自动收紧 */
     transition: background-color .35s ease, color .35s ease; /* 主题切换柔化（无 view-transition 时兜底） */
   }
 
@@ -52,6 +53,30 @@
   }
 
   p { text-wrap: pretty; }
+
+  /* ---------- 全页质感层 ----------
+     ① 胶片颗粒：极淡的 feTurbulence 灰噪铺满全页，平面色立刻有"纸感"。
+     ② 暗角：视口四边轻微压暗，视线自然收向中央。两层均不挡交互。 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .032;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 299;
+    pointer-events: none;
+    background: radial-gradient(125% 92% at 50% 42%, transparent 58%, rgba(0, 0, 0, .13));
+  }
+  html[data-theme="fog"] body::after {
+    background: radial-gradient(125% 92% at 50% 42%, transparent 62%, rgba(0, 0, 0, .06));
+  }
 
   a {
     text-decoration: none;
