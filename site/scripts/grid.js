@@ -1,71 +1,82 @@
 /* ============================================================
-   grid.js · Hero 格子图 demo
-   198 格（18×11），分布参照 docs/home.png：
-   上部系统占用灰块 → 中部可清理蓝带 → 待确认描边排 → 底部
-   可用/仅统计/正在使用，零散大文件橙格。
-   另负责：波浪入场延迟、鼠标透镜、tooltip、图例联动。
+   grid.js · 格子
+   首屏 198 格（数量和分类占比照 docs/home.png 那台机器）。
+   格子按“故事顺序”排成一维：系统占用 → 仅统计 → 可清理 → 建议迁移
+   → 待确认 → 大文件 → 正在使用 → 残留/扫描 → 可用。
+   横屏竖屏怎么折行交给 CSS（.cells 的 grid-auto-flow）。
+   另负责：波浪入场延迟、指针邻近度、tooltip、图例联动。
    ============================================================ */
 
-const COLS = 18, ROWS = 11, LENS_R = 85, LENS_MAX = 1.22;
+/* DOM 顺序 = 行主序：index = 行×列数 + 列。
+   横屏 18 列，竖屏 11 列；波浪延迟只跟相对位置走，取近似即可。 */
+const COLS = 18;
 
-/* 状态 → 类名 + 悬停文案（少量假数据） */
+import { L, pick } from './i18n.js';
+
+/* 状态 → 悬停文案（双语块，悬停时按 <html lang> 取） */
 const TIP = {
-  sys:     ['系统占用', 'Windows 与未识别 · 1 GB'],
-  clean:   ['可清理', ['NVIDIA DXCache · 10.5 GB', 'DirectX 着色器缓存 · 4.05 GB',
+  sys:     { zh: ['系统占用', 'Windows 与未识别 · 1 GB'],
+             en: ['System', 'Windows & unclassified · 1 GB'] },
+  clean:   { zh: ['可清理', ['NVIDIA DXCache · 10.5 GB', 'DirectX 着色器缓存 · 4.05 GB',
                        'Playwright · 718 MB', 'Go 编译缓存 · 358 MB',
                        'Gradle caches · 321 MB', 'VS Code 缓存 · 88 MB',
                        'NuGet 缓存 · 275 MB', '浏览器缓存 · 642 MB']],
-  move:    ['建议迁移', ['HuggingFace 模型 · 1.9 GB', '微信聊天记录 · 620 MB', '项目依赖 · 370 MB']],
-  confirm: ['待确认', ['旧游戏存档 · 2.1 GB', '过期下载 · 1.36 GB', 'WorkBuddy AI · 1.48 GB',
+             en: ['Cleanable', ['NVIDIA DXCache · 10.5 GB', 'DirectX shader cache · 4.05 GB',
+                       'Playwright · 718 MB', 'Go build cache · 358 MB',
+                       'Gradle caches · 321 MB', 'VS Code cache · 88 MB',
+                       'NuGet cache · 275 MB', 'Browser cache · 642 MB']] },
+  move:    { zh: ['建议迁移', ['HuggingFace 模型 · 1.9 GB', '微信聊天记录 · 620 MB', '项目依赖 · 370 MB']],
+             en: ['Migrate', ['HuggingFace models · 1.9 GB', 'WeChat history · 620 MB', 'Project deps · 370 MB']] },
+  confirm: { zh: ['待确认', ['旧游戏存档 · 2.1 GB', '过期下载 · 1.36 GB', 'WorkBuddy AI · 1.48 GB',
                        '旧版安装包 · 980 MB', '导出视频 · 2.4 GB']],
-  busy:    ['正在使用', ['微信/QQ 运行中 · 6.58 GB', '已装应用 · 4.65 GB', 'Docker 镜像 · 2.2 GB']],
-  stat:    ['仅统计', ['文档与桌面 · 2.2 GB', '已装应用 · 4.65 GB', '系统组件 · 8.1 GB', '照片 · 1.3 GB']],
-  free:    ['可用', '可用空间 · 约 1 GB'],
-  warn:    ['大文件', ['安装包缓存 · 1.36 GB', '视频工程文件 · 4.2 GB', '虚拟机镜像 · 7.8 GB']],
-  res:     ['清理残留', '上次未删净 · 待重试'],
-  scan:    ['扫描中', '正在识别…'],
+             en: ['Review', ['Old game saves · 2.1 GB', 'Stale downloads · 1.36 GB', 'WorkBuddy AI · 1.48 GB',
+                       'Old installers · 980 MB', 'Exported videos · 2.4 GB']] },
+  busy:    { zh: ['正在使用', ['微信/QQ 运行中 · 6.58 GB', '已装应用 · 4.65 GB', 'Docker 镜像 · 2.2 GB']],
+             en: ['In use', ['WeChat/QQ running · 6.58 GB', 'Installed apps · 4.65 GB', 'Docker images · 2.2 GB']] },
+  stat:    { zh: ['仅统计', ['文档与桌面 · 2.2 GB', '已装应用 · 4.65 GB', '系统组件 · 8.1 GB', '照片 · 1.3 GB']],
+             en: ['Counted', ['Docs & desktop · 2.2 GB', 'Installed apps · 4.65 GB', 'System parts · 8.1 GB', 'Photos · 1.3 GB']] },
+  free:    { zh: ['可用', '可用空间 · 约 1 GB'],
+             en: ['Free', 'Free space · ~1 GB'] },
+  warn:    { zh: ['大文件', ['安装包缓存 · 1.36 GB', '视频工程文件 · 4.2 GB', '虚拟机镜像 · 7.8 GB']],
+             en: ['Big file', ['Installer cache · 1.36 GB', 'Video project · 4.2 GB', 'VM image · 7.8 GB']] },
+  res:     { zh: ['清理残留', '上次未删净 · 待重试'],
+             en: ['Leftover', 'Not fully deleted · pending retry'] },
+  scan:    { zh: ['扫描中', '正在识别…'],
+             en: ['Scanning', 'Recognizing…'] },
 };
 
-/* 逐格状态表：行主序，长度必须 = COLS*ROWS。
-   s=sys c=clean m=move f=confirm(待确认) b=busy t=stat(仅统计)
-   .=free w=warn r=res(清理残留) ~=scan */
-const MAP = [
-  'ssssssssssssssssss',
-  'ssssssssssssssssss',
-  'ssssssssssssssssss',
-  'ssssssssssssssssss',
-  'ssssssssssssssssss',
-  'ssssssssssssssssss',
-  'sssstttttttttttttt',   // 系统占用尾排 + 仅统计描边
-  'ttttttttttttttcccc',   // 仅统计 + 蓝带右起
-  'ccccccccccccccmmmw',   // 蓝带 + 建议迁移黑格 + 大文件
-  'fffffffffffwwttttt',   // 待确认描边排 + 大文件 + 仅统计
-  'bbbbttt.....r~.bbb',   // 正在使用(点) + 仅统计 + 可用 + 残留/扫描 + 正在使用
+/* 故事顺序：[状态, 格数]，合计 198。
+   每类占用连成一整块（允许同一状态分两段出现，块仍然相连）：
+   r0-5  sys×108        r6  sys×4 stat×14     r7  stat×18
+   r8    stat×4 clean×14   r9  busy×7 clean×4 confirm×7
+   r10   free×11 confirm×4 move×3                                */
+const STORY = [
+  ['sys', 112], ['stat', 36], ['clean', 14], ['busy', 7], ['clean', 4],
+  ['confirm', 7], ['free', 11], ['confirm', 4], ['move', 3],
 ];
+
 const CLS = { s:'sys', c:'clean', m:'move', f:'confirm', b:'busy',
-              t:'stat', '.':'free', w:'warn', r:'res', '~':'scan' };
+              t:'stat', '.':'free', w:'warn', r:'res', '~':'scan',
+              C:'freed', M:'moved' };
 
 let pick_i = 0;
-function tipFor(state) {
-  const t = TIP[state];
-  const detail = Array.isArray(t[1]) ? t[1][pick_i++ % t[1].length] : t[1];
-  return { name: t[0], detail };
+function tipIdxFor(state) {
+  const t = TIP[state].zh;
+  return Array.isArray(t[1]) ? pick_i++ : -1; // 数组详情每格轮换一条
 }
 
-export function buildGrid(el, { wave = true } = {}) {
+export function buildGrid(el) {
   const frag = document.createDocumentFragment();
   const cells = [];
-  for (let r = 0; r < ROWS; r++) {
-    const row = MAP[r];
-    for (let c = 0; c < COLS; c++) {
-      const state = CLS[row[c]];
+  let i = 0;
+  for (const [state, n] of STORY) {
+    for (let k = 0; k < n; k++, i++) {
       const d = document.createElement('i');
       d.className = 'cell cell--' + state;
       d.dataset.s = state;
-      const tip = tipFor(state);
-      d.dataset.tip = tip.detail;
-      d.dataset.cat = tip.name;
-      if (wave) d.style.setProperty('--d', (c * 12 + r * 30) + 'ms');
+      d.dataset.tipIdx = tipIdxFor(state); // 悬停时按语言从 TIP 取文案
+      // 斜向波浪：按行主序算延迟（列*26 + 行*16）
+      d.style.setProperty('--d', ((i % COLS) * 26 + Math.floor(i / COLS) * 16) + 'ms');
       frag.appendChild(d);
       cells.push(d);
     }
@@ -74,32 +85,52 @@ export function buildGrid(el, { wave = true } = {}) {
   return cells;
 }
 
-/* ---------- 鼠标透镜 + tooltip ---------- */
+/* 全空的盘（下载区背景） */
+export function buildEmpty(el, n = 198) {
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('i');
+    d.className = 'cell';
+    d.style.setProperty('--d', ((i % COLS) * 22 + Math.floor(i / COLS) * 14) + 'ms');
+    frag.appendChild(d);
+  }
+  el.appendChild(frag);
+  return [...el.children];
+}
+
+/* ---------- 指针邻近度 + tooltip ----------
+   指针周围的格子写 --k（1 = 正下方，0 = 圈外），CSS 让它们往里缩。 */
 export function initLens(gmap, tip) {
   const cells = [...gmap.children];
-  let centers = [], raf = 0, px = -1e4, py = -1e4, inside = false;
+  let centers = [], radius = 200, raf = 0, px = 0, py = 0, inside = false;
+  let lit = new Set();
 
   const measure = () => {
     centers = cells.map(el => [el.offsetLeft + el.offsetWidth / 2,
                                el.offsetTop + el.offsetHeight / 2]);
+    radius = (cells[0]?.offsetWidth || 90) * 2.3;
   };
   measure();
   new ResizeObserver(measure).observe(gmap);
 
   const paint = () => {
     raf = 0;
-    if (!inside) return;
-    for (let i = 0; i < cells.length; i++) {
-      const [cx, cy] = centers[i];
-      const d = Math.hypot(cx - px, cy - py);
-      // 透镜：圆心处放到 1.22，边缘线性回落到 1
-      const s = d < LENS_R ? 1 + (LENS_MAX - 1) * (1 - d / LENS_R) : 1;
-      cells[i].style.transform = s > 1.005 ? `scale(${s.toFixed(3)})` : '';
+    const next = new Set();
+    if (inside) {
+      for (let i = 0; i < cells.length; i++) {
+        const d = Math.hypot(centers[i][0] - px, centers[i][1] - py);
+        if (d >= radius) continue;
+        cells[i].style.setProperty('--k', (1 - d / radius).toFixed(3));
+        next.add(cells[i]);
+      }
     }
+    for (const c of lit) if (!next.has(c)) c.style.removeProperty('--k');
+    lit = next;
   };
   const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
 
   gmap.addEventListener('pointermove', e => {
+    if (e.pointerType === 'touch') return;
     const r = gmap.getBoundingClientRect();
     px = e.clientX - r.left; py = e.clientY - r.top;
     inside = true;
@@ -107,52 +138,38 @@ export function initLens(gmap, tip) {
   });
   gmap.addEventListener('pointerleave', () => {
     inside = false;
-    cells.forEach(c => { c.style.transform = ''; });
+    queue();
     tip.classList.remove('on');
   });
 
-  /* tooltip：跟随悬停格，读出假数据。
-     gtip 定位参照 .panel，需加上 gmap 在面板内的偏移 */
   gmap.addEventListener('pointerover', e => {
     const c = e.target.closest('.cell');
-    if (!c) { tip.classList.remove('on'); return; }
-    tip.textContent = `${c.dataset.tip} · ${c.dataset.cat}`;
-    const x = gmap.offsetLeft + c.offsetLeft + c.offsetWidth / 2;
-    tip.style.left = Math.min(Math.max(x, 78), gmap.offsetLeft + gmap.clientWidth - 78) + 'px';
-    // 顶部行的格子向上弹会被面板裁掉，翻转到格下弹出
-    const below = c.offsetTop < 46;
+    if (!c || e.pointerType === 'touch') { tip.classList.remove('on'); return; }
+    const t = pick(TIP[c.dataset.s]);
+    const idx = +c.dataset.tipIdx || 0;
+    const detail = Array.isArray(t[1]) ? t[1][idx % t[1].length] : t[1];
+    tip.textContent = c.classList.contains('is-freed') ? L('已腾出 · 约 1 GB', 'Freed · ~1 GB')
+      : c.classList.contains('is-moved') ? L('已搬走 · 原地留了链接', 'Moved · link left in place')
+      : `${detail} · ${t[0]}`;
+    const x = c.offsetLeft + c.offsetWidth / 2;
+    tip.style.left = Math.min(Math.max(x, 110), gmap.clientWidth - 110) + 'px';
+    // 顶上两排在导航底下，往上弹会被挡住，翻到格子下面
+    const below = c.offsetTop < 120;
     tip.classList.toggle('below', below);
-    tip.style.top = (gmap.offsetTop + c.offsetTop + (below ? c.offsetHeight : 0)) + 'px';
+    tip.style.top = (c.offsetTop + (below ? c.offsetHeight : 0)) + 'px';
     tip.classList.add('on');
   });
 }
 
-/* ---------- 图例 hover 联动 ---------- */
-export function initLegend(legendEl, gmap) {
-  const clear = () => {
-    gmap.classList.remove('dim');
-    for (const c of gmap.children) c.classList.remove('hit');
-  };
-  legendEl.addEventListener('pointerover', e => {
-    const li = e.target.closest('[data-hit]');
-    if (!li) { clear(); return; }   // 指针落在条目间隙时别留残留高亮
-    gmap.classList.add('dim');
-    for (const c of gmap.children)
-      c.classList.toggle('hit', c.dataset.s === li.dataset.hit);
-  });
-  legendEl.addEventListener('pointerleave', clear);
-}
-
-/* ---------- 装饰用小图（步骤视觉 / bento 卡） ----------
-   给一段状态字符画，生成小号格子阵 */
-export function buildMini(el, rows, cols, states, { wave = true } = {}) {
+/* ---------- 卡片里的小图：给一段状态字符画，生成小号格子阵 ---------- */
+export function buildMini(el, rows, cols, states) {
   const frag = document.createDocumentFragment();
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const state = states[Math.min(r, states.length - 1)][c] || '.';
       const d = document.createElement('i');
       d.className = 'cell cell--' + (CLS[state] || 'free');
-      if (wave) d.style.setProperty('--d', (c * 14 + r * 34) + 'ms');
+      d.style.setProperty('--d', (c * 14 + r * 34) + 'ms');
       frag.appendChild(d);
     }
   }

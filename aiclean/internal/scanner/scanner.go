@@ -212,6 +212,10 @@ func Scan(rules []model.Rule) []model.ScanItem {
 		if r.Action == "ignore" {
 			continue
 		}
+		if r.RegKey != "" {
+			items = append(items, scanRegRule(r, procs)...)
+			continue
+		}
 		p := expandEnv(r.Path)
 		// 通配符规则（如 %LOCALAPPDATA%\JetBrains\*\caches）展开成多条候选
 		paths := []string{p}

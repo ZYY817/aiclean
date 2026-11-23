@@ -358,6 +358,9 @@ func (s *Store) Restore(id string) error {
 	if err != nil || json.Unmarshal(b, &m) != nil {
 		return fmt.Errorf("元数据缺失: %s", id)
 	}
+	if strings.HasPrefix(m.OrigPath, "reg:") {
+		return s.regRestoreL(id, dst) // 注册表项：回写 backup.json 而非还原文件
+	}
 	if _, err := os.Lstat(m.OrigPath); err == nil {
 		return fmt.Errorf("原路径已存在，拒绝覆盖: %s", m.OrigPath)
 	}

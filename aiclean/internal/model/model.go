@@ -31,6 +31,9 @@ type ScanItem struct {
 	LastMod        string   `json:"lastMod,omitempty"`
 	Skipped        int      `json:"skipped,omitempty"`        // 跳过的 reparse 点数
 	RequiresClosed []string `json:"requiresClosed,omitempty"` // 执行前须复查的进程名（扫描时状态会过期）
+	Registry       bool     `json:"registry,omitempty"`       // 注册表项（path 形如 reg:HIVE\Key[\#Value]）
+	RegKey         string   `json:"regKey,omitempty"`         // 完整键路径 HKCU\... / HKLM\...
+	RegValue       string   `json:"regValue,omitempty"`       // 值名；空 = 目标是键本身
 }
 
 // Rule rules.json 单条规则
@@ -51,6 +54,8 @@ type Rule struct {
 	ScanHeuristics   bool     `json:"scanHeuristics"` // 按名字模式发现子目录（cache/logs→可清，data/session→待确认）
 	MatchFile        string   `json:"matchFile"`      // 命中的目录里必须存在该文件才生效（支持 glob，如 *.vhdx）
 	NoMigrate        bool     `json:"noMigrate"`      // 即使 reportOnly/migrate 也禁止 junction 迁移
+	RegKey           string   `json:"regKey"`         // 注册表键路径 HKCU\... / HKLM\...（与 path 二选一）
+	RegMode          string   `json:"regMode"`        // orphan-uninstall|missing-target|missing-target-name|missing-subkey|clear-values
 	Note             string   `json:"note"`
 }
 

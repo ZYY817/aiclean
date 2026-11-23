@@ -2708,6 +2708,1237 @@
       "action": "review",
       "requiresAdmin": true,
       "note": "Hyper-V 虚拟磁盘，删除前请在 Hyper-V 管理器里确认不再使用。"
+    },
+    {
+      "id": "prefetch",
+      "path": "C:\\Windows\\Prefetch",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "程序预读取文件。删除安全，系统会重建；个别程序首次启动可能稍慢一次。"
+    },
+    {
+      "id": "svc-localservice-temp",
+      "path": "C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Temp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "LocalService 系统服务临时文件，可安全删除。"
+    },
+    {
+      "id": "svc-networkservice-temp",
+      "path": "C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Temp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "NetworkService 系统服务临时文件，可安全删除。"
+    },
+    {
+      "id": "downloaded-program-files",
+      "path": "C:\\Windows\\Downloaded Program Files",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "旧版浏览器下载的 ActiveX 程序文件，现代浏览器已不使用。"
+    },
+    {
+      "id": "spotlight-assets",
+      "path": "%LOCALAPPDATA%\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "Windows 聚焦锁屏图片缓存，删除后自动下载新图。"
+    },
+    {
+      "id": "panther-logs",
+      "path": "C:\\Windows\\Panther",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "系统安装/升级日志，排障才用得上。"
+    },
+    {
+      "id": "dism-logs",
+      "path": "C:\\Windows\\Logs\\DISM",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "DISM 组件修复日志，只删 30 天前的。"
+    },
+    {
+      "id": "mosetup-logs",
+      "path": "C:\\Windows\\Logs\\MoSetup",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "系统升级日志，只删 30 天前的。"
+    },
+    {
+      "id": "wu-logs",
+      "path": "C:\\Windows\\Logs\\WindowsUpdate",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "Windows 更新 ETL 日志，只删 30 天前的。"
+    },
+    {
+      "id": "setupapi-logs",
+      "path": "C:\\Windows\\INF\\setupapi.*.log",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "驱动安装日志，只删 30 天前的日志文件，不动 INF 驱动本体。"
+    },
+    {
+      "id": "debug-logs",
+      "path": "C:\\Windows\\debug",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "系统调试日志目录，普通用户用不到。"
+    },
+    {
+      "id": "event-logs",
+      "path": "C:\\Windows\\System32\\winevt\\Logs",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Windows 事件日志（.evtx）。删除安全但会清空事件查看器历史；服务占用中的文件会自动跳过。"
+    },
+    {
+      "id": "sys-logfiles",
+      "path": "C:\\Windows\\System32\\LogFiles",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "SCM/WMI/HTTP 等系统服务日志，只删 30 天前的；占用文件会跳过。"
+    },
+    {
+      "id": "iis-logs",
+      "path": "C:\\inetpub\\logs\\LogFiles",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "IIS 网站访问日志（仅装过 IIS 的机器才有），只删 30 天前的。"
+    },
+    {
+      "id": "cryptnet-cache",
+      "path": "%USERPROFILE%\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "证书下载缓存，系统需要时自动重新下载。"
+    },
+    {
+      "id": "etw-diagnosis",
+      "path": "C:\\ProgramData\\Microsoft\\Diagnosis",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "诊断跟踪（ETL）日志与转储文件，排障用，日常可删。"
+    },
+    {
+      "id": "wu-datastore",
+      "path": "C:\\Windows\\SoftwareDistribution\\DataStore",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Windows 更新历史数据库。删除后自动重建，更新历史列表会清空；占用时自动跳过。"
+    },
+    {
+      "id": "print-spool-stuck",
+      "path": "C:\\Windows\\System32\\spool\\PRINTERS",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "卡住的打印队列任务，删除可解打印卡死；进行中的任务会被占用自动跳过。"
+    },
+    {
+      "id": "defender-scan-history",
+      "path": "C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Defender 扫描历史记录，不影响防护本身。"
+    },
+    {
+      "id": "uso-updatestore",
+      "path": "C:\\ProgramData\\USOPrivate\\UpdateStore",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "更新编排器已下载的临时更新文件，需要时重新下载。"
+    },
+    {
+      "id": "fontcache",
+      "path": "C:\\Windows\\System32\\FNTCACHE.DAT",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "字体缓存文件。删除后系统重建；字体服务运行中可能删不掉，属正常。"
+    },
+    {
+      "id": "fontcache-dir",
+      "path": "C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "字体缓存目录，删除后自动重建；占用中的文件会跳过。"
+    },
+    {
+      "id": "chkdsk-found",
+      "path": "C:\\FOUND.*",
+      "tool": "系统",
+      "category": "system",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "磁盘修复找回的文件碎片。理论上有恢复数据的可能，确认无用再删。"
+    },
+    {
+      "id": "config-msi",
+      "path": "C:\\Config.Msi",
+      "tool": "系统",
+      "category": "system",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "安装程序残留的回滚目录，正常应为空；有内容多为安装中断残留。"
+    },
+    {
+      "id": "dumpstack-tmp",
+      "path": "C:\\DumpStack.log.tmp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "系统崩溃转储临时文件，删除安全。"
+    },
+    {
+      "id": "sysprofile-inetcache",
+      "path": "C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft\\Windows\\INetCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "系统账户的网络缓存，删除安全。"
+    },
+    {
+      "id": "privacy-recent",
+      "path": "%APPDATA%\\Microsoft\\Windows\\Recent",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "「最近使用的文件」与任务栏跳转列表记录。只清空历史列表，不删文件本体。"
+    },
+    {
+      "id": "privacy-cdp",
+      "path": "%LOCALAPPDATA%\\ConnectedDevicesPlatform",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "review",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "活动历史（时间线/跨设备同步）缓存。删除后同步历史清空，不影响使用。"
+    },
+    {
+      "id": "edge-gpucache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\GPUCache",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "显卡合成缓存，自动重建。"
+    },
+    {
+      "id": "edge-swcache",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Service Worker\\CacheStorage",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "离线缓存，网站需要时重建。"
+    },
+    {
+      "id": "edge-crashpad",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Crashpad",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "浏览器崩溃报告。"
+    },
+    {
+      "id": "edge-dawn",
+      "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Dawn*Cache",
+      "tool": "Edge 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "msedge"
+      ],
+      "note": "WebGPU 着色器缓存，自动重建。"
+    },
+    {
+      "id": "chrome-gpucache",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\GPUCache",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "显卡合成缓存，自动重建。"
+    },
+    {
+      "id": "chrome-swcache",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Service Worker\\CacheStorage",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "离线缓存，网站需要时重建。"
+    },
+    {
+      "id": "chrome-crashpad",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Crashpad",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "浏览器崩溃报告。"
+    },
+    {
+      "id": "chrome-dawn",
+      "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Dawn*Cache",
+      "tool": "Chrome 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "chrome"
+      ],
+      "note": "WebGPU 着色器缓存，自动重建。"
+    },
+    {
+      "id": "brave-cache",
+      "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\Cache",
+      "tool": "Brave 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "brave"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "brave-gpucache",
+      "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\GPUCache",
+      "tool": "Brave 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "brave"
+      ],
+      "note": "显卡缓存，自动重建。"
+    },
+    {
+      "id": "vivaldi-cache",
+      "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\*\\Cache",
+      "tool": "Vivaldi 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "vivaldi"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "vivaldi-gpucache",
+      "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\*\\GPUCache",
+      "tool": "Vivaldi 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "vivaldi"
+      ],
+      "note": "显卡缓存，自动重建。"
+    },
+    {
+      "id": "opera-cache",
+      "path": "%APPDATA%\\Opera Software\\Opera Stable\\Cache",
+      "tool": "Opera 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "opera"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "opera-gx-cache",
+      "path": "%APPDATA%\\Opera Software\\Opera GX Stable\\Cache",
+      "tool": "Opera GX 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "opera"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "qqbrowser-cache",
+      "path": "%LOCALAPPDATA%\\Tencent\\QQBrowser\\User Data\\*\\Cache",
+      "tool": "QQ 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "QQBrowser"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "comet-cache",
+      "path": "%LOCALAPPDATA%\\Perplexity\\Comet\\User Data\\*\\Cache",
+      "tool": "Comet 浏览器",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "comet"
+      ],
+      "note": "网页缓存，自动重建。"
+    },
+    {
+      "id": "qqmusic",
+      "path": "%LOCALAPPDATA%\\Tencent\\QQMusic",
+      "tool": "QQ音乐",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "QQMusic"
+      ],
+      "scanHeuristics": true,
+      "note": "QQ音乐缓存与下载；缓存子目录自动识别可清，下载的歌曲保留。"
+    },
+    {
+      "id": "kugou",
+      "path": "%APPDATA%\\KuGou",
+      "tool": "酷狗音乐",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "KuGou"
+      ],
+      "scanHeuristics": true,
+      "note": "酷狗缓存与下载目录；缓存自动识别可清。"
+    },
+    {
+      "id": "iqiyi",
+      "path": "%LOCALAPPDATA%\\iQIYI",
+      "tool": "爱奇艺",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "iQIYI"
+      ],
+      "scanHeuristics": true,
+      "note": "爱奇艺客户端缓存与离线视频；缓存自动识别可清。"
+    },
+    {
+      "id": "qqlive",
+      "path": "%APPDATA%\\Tencent\\QQLive",
+      "tool": "腾讯视频",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "QQLive"
+      ],
+      "scanHeuristics": true,
+      "note": "腾讯视频客户端缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "youku",
+      "path": "%APPDATA%\\Youku",
+      "tool": "优酷",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "Youku"
+      ],
+      "scanHeuristics": true,
+      "note": "优酷客户端缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "douyin-pc",
+      "path": "%LOCALAPPDATA%\\douyin",
+      "tool": "抖音电脑版",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "douyin"
+      ],
+      "scanHeuristics": true,
+      "note": "抖音 PC 客户端缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "jianying-cache",
+      "path": "%LOCALAPPDATA%\\JianyingPro\\User Data\\Cache",
+      "tool": "剪映",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "JianyingPro"
+      ],
+      "note": "剪映编辑缓存，草稿和素材不受影响。"
+    },
+    {
+      "id": "jianying-gpu",
+      "path": "%LOCALAPPDATA%\\JianyingPro\\User Data\\GPUCache",
+      "tool": "剪映",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "JianyingPro"
+      ],
+      "note": "剪映显卡缓存。"
+    },
+    {
+      "id": "capcut-cache",
+      "path": "%LOCALAPPDATA%\\CapCut\\User Data\\Cache",
+      "tool": "CapCut",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "CapCut"
+      ],
+      "note": "CapCut 编辑缓存，工程不受影响。"
+    },
+    {
+      "id": "obs-logs",
+      "path": "%APPDATA%\\obs-studio\\logs",
+      "tool": "OBS Studio",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "obs64"
+      ],
+      "note": "OBS 运行日志。"
+    },
+    {
+      "id": "obs-crashes",
+      "path": "%APPDATA%\\obs-studio\\crashes",
+      "tool": "OBS Studio",
+      "category": "app",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "obs64"
+      ],
+      "note": "OBS 崩溃报告。"
+    },
+    {
+      "id": "baidunetdisk",
+      "path": "%APPDATA%\\baidu\\BaiduYunGuanjia",
+      "tool": "百度网盘",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "BaiduNetdisk",
+        "baidunetdisk"
+      ],
+      "scanHeuristics": true,
+      "note": "百度网盘缓存与同步数据；缓存自动识别可清。"
+    },
+    {
+      "id": "adrive",
+      "path": "%LOCALAPPDATA%\\aDrive",
+      "tool": "阿里云盘",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "aDrive"
+      ],
+      "scanHeuristics": true,
+      "note": "阿里云盘缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "thunder",
+      "path": "%LOCALAPPDATA%\\Thunder",
+      "tool": "迅雷",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "Thunder"
+      ],
+      "scanHeuristics": true,
+      "note": "迅雷缓存与下载记录；缓存自动识别可清。"
+    },
+    {
+      "id": "wps-data",
+      "path": "%APPDATA%\\kingsoft",
+      "tool": "WPS Office",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "wps",
+        "et",
+        "wpp"
+      ],
+      "scanHeuristics": true,
+      "note": "WPS 缓存与模板备份；缓存自动识别可清。"
+    },
+    {
+      "id": "zoom-data",
+      "path": "%APPDATA%\\Zoom",
+      "tool": "Zoom",
+      "category": "app",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "Zoom"
+      ],
+      "scanHeuristics": true,
+      "note": "Zoom 日志与缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "todesk",
+      "path": "%PROGRAMDATA%\\ToDesk",
+      "tool": "ToDesk",
+      "category": "app",
+      "risk": "caution",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "scanHeuristics": true,
+      "note": "ToDesk 配置与日志。"
+    },
+    {
+      "id": "wegame",
+      "path": "%APPDATA%\\Tencent\\WeGame",
+      "tool": "WeGame",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "WeGame"
+      ],
+      "scanHeuristics": true,
+      "note": "WeGame 平台缓存与日志；缓存自动识别可清。"
+    },
+    {
+      "id": "riot-client",
+      "path": "%LOCALAPPDATA%\\Riot Games",
+      "tool": "Riot 游戏",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "RiotClientServices",
+        "Riot Client"
+      ],
+      "scanHeuristics": true,
+      "note": "Riot 客户端与 VALORANT/LOL 数据；缓存日志自动识别可清。"
+    },
+    {
+      "id": "valorant-logs",
+      "path": "%LOCALAPPDATA%\\VALORANT\\Saved\\Logs",
+      "tool": "VALORANT",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "VALORANT"
+      ],
+      "note": "VALORANT 运行日志。"
+    },
+    {
+      "id": "valorant-crashes",
+      "path": "%LOCALAPPDATA%\\VALORANT\\Saved\\Crashes",
+      "tool": "VALORANT",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "VALORANT"
+      ],
+      "note": "VALORANT 崩溃报告。"
+    },
+    {
+      "id": "gog-galaxy",
+      "path": "%LOCALAPPDATA%\\GOG.com\\Galaxy",
+      "tool": "GOG Galaxy",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "GalaxyClient"
+      ],
+      "scanHeuristics": true,
+      "note": "GOG 客户端缓存；缓存自动识别可清。"
+    },
+    {
+      "id": "bluestacks-logs",
+      "path": "C:\\ProgramData\\BlueStacks_nxt\\Logs",
+      "tool": "BlueStacks",
+      "category": "game",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "HD-Player"
+      ],
+      "requiresAdmin": true,
+      "note": "BlueStacks 模拟器日志。"
+    },
+    {
+      "id": "nox",
+      "path": "%LOCALAPPDATA%\\Nox",
+      "tool": "夜神模拟器",
+      "category": "game",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "Nox",
+        "NoxAppPlayer"
+      ],
+      "scanHeuristics": true,
+      "note": "夜神模拟器缓存与日志；虚拟机镜像不会被删。"
+    },
+    {
+      "id": "bun-cache",
+      "path": "%USERPROFILE%\\.bun\\install\\cache",
+      "tool": "bun",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "bun 包缓存，下次安装重新下载。"
+    },
+    {
+      "id": "deno-cache",
+      "path": "%LOCALAPPDATA%\\deno",
+      "tool": "Deno",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "Deno 模块缓存，需要时重新下载。"
+    },
+    {
+      "id": "sublime-cache",
+      "path": "%APPDATA%\\Sublime Text\\Cache",
+      "tool": "Sublime Text",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "sublime_text"
+      ],
+      "note": "Sublime Text 索引与缓存。"
+    },
+    {
+      "id": "vcpkg-dl",
+      "path": "%LOCALAPPDATA%\\vcpkg\\downloads",
+      "tool": "vcpkg",
+      "category": "dev",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "vcpkg 下载的源码包存档，下次构建重新下载。"
+    },
+    {
+      "id": "unreal-ddc",
+      "path": "%LOCALAPPDATA%\\UnrealEngine\\Common\\DerivedDataCache",
+      "tool": "Unreal 引擎",
+      "category": "dev",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [
+        "UnrealEditor"
+      ],
+      "note": "共享派生数据缓存（着色器等），引擎自动重建，首次可能较慢。"
+    },
+    {
+      "id": "notepadpp-backup",
+      "path": "%APPDATA%\\Notepad++\\backup",
+      "tool": "Notepad++",
+      "category": "dev",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Notepad++ 未保存文件的自动备份，确认不需要恢复再处理。"
+    },
+    {
+      "id": "anythingllm",
+      "path": "%APPDATA%\\anythingllm-desktop",
+      "tool": "AnythingLLM",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "anythingllm-desktop"
+      ],
+      "note": "AnythingLLM 本地知识库与模型数据，处理前确认已备份。"
+    },
+    {
+      "id": "gpt4all",
+      "path": "%LOCALAPPDATA%\\nomic.ai\\GPT4All",
+      "tool": "GPT4All",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "gpt4all",
+        "chat"
+      ],
+      "note": "GPT4All 下载的本地模型，可整体迁到其他盘。"
+    },
+    {
+      "id": "pinokio",
+      "path": "%USERPROFILE%\\pinokio",
+      "tool": "Pinokio",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "Pinokio 安装的 AI 应用与环境，处理前确认哪些还在用。"
+    },
+    {
+      "id": "sparkdesk",
+      "path": "%APPDATA%\\SparkDesk",
+      "tool": "讯飞星火",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [
+        "SparkDesk"
+      ],
+      "scanHeuristics": true,
+      "note": "讯飞星火桌面端缓存与数据；缓存自动识别可清。"
+    },
+    {
+      "id": "stability-matrix",
+      "path": "%APPDATA%\\StabilityMatrix",
+      "tool": "Stability Matrix",
+      "category": "ai",
+      "risk": "user-data",
+      "action": "review",
+      "requiresClosed": [],
+      "note": "AI 绘图后端与模型管理器数据，处理前确认模型已备份。"
+    },
+    {
+      "id": "rescache",
+      "path": "C:\\Windows\\rescache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "应用资源缓存，系统会重建。"
+    },
+    {
+      "id": "waasmedic-logs",
+      "path": "C:\\Windows\\Logs\\waasmedic",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "olderThanDays": 30,
+      "note": "更新修复服务日志，只删 30 天前的。"
+    },
+    {
+      "id": "sysprofile-temp",
+      "path": "C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Temp",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "System 账户临时文件，可安全删除。"
+    },
+    {
+      "id": "syswow64-inetcache",
+      "path": "C:\\Windows\\SysWOW64\\config\\systemprofile\\AppData\\Local\\Microsoft\\Windows\\INetCache",
+      "tool": "系统",
+      "category": "system",
+      "risk": "safe",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "32位系统账户网络缓存。"
+    },
+    {
+      "id": "bits-downloader",
+      "path": "C:\\ProgramData\\Microsoft\\Network\\Downloader",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "BITS 后台下载缓存；进行中的下载会自动跳过。"
+    },
+    {
+      "id": "appraiser",
+      "path": "C:\\Windows\\appcompat\\appraiser",
+      "tool": "系统",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "系统兼容性遥测数据，删除安全。"
+    },
+    {
+      "id": "defender-stash",
+      "path": "C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\FilesStash",
+      "tool": "系统",
+      "category": "system",
+      "risk": "review",
+      "action": "review",
+      "requiresClosed": [],
+      "requiresAdmin": true,
+      "note": "Defender 隔离文件暂存。删除后隔离的文件无法还原，确认无需要还原的文件再删。"
+    },
+    {
+      "id": "search-app",
+      "path": "%LOCALAPPDATA%\\Packages\\Microsoft.Windows.Search_cw5n1h2txyewy\\LocalState",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresClosed": [],
+      "note": "搜索应用历史记录缓存。"
+    },
+    {
+      "id": "itunes-backup",
+      "path": "%APPDATA%\\Apple Computer\\MobileSync\\Backup",
+      "tool": "iTunes 备份",
+      "category": "user",
+      "risk": "user-data",
+      "action": "migrate",
+      "requiresClosed": [
+        "iTunes",
+        "AppleMobileBackup"
+      ],
+      "note": "iPhone/iPad 备份，常年几十 GB。可整体迁到其他盘，iTunes 照常识别。"
+    },
+    {
+      "id": "reg-uninstall-orphans-user",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+      "regMode": "orphan-uninstall",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "note": "卸载残留：子键引用的程序文件已全部不存在，只剩控制面板里的空条目。删除不影响系统，只是少一行已失效的卸载记录。"
+    },
+    {
+      "id": "reg-run-stale-user",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "regMode": "missing-target",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "失效开机启动项：启动命令指向的程序文件已不存在，留着只会拖慢开机。"
+    },
+    {
+      "id": "reg-runonce-stale-user",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "regMode": "missing-target",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "失效的一次性启动项：指向的程序文件已不存在。"
+    },
+    {
+      "id": "reg-apppaths-stale-user",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",
+      "regMode": "missing-subkey",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "note": "失效 App Paths 项：登记的程序路径已不存在。App Paths 供 Win+R 直接输程序名启动用。"
+    },
+    {
+      "id": "reg-uninstall-orphans-sys",
+      "regKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+      "regMode": "orphan-uninstall",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "note": "卸载残留（全系统）：子键引用的程序文件已全部不存在。删除不影响系统，只是少一行已失效的卸载记录。"
+    },
+    {
+      "id": "reg-uninstall-orphans-sys32",
+      "regKey": "HKLM\\Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+      "regMode": "orphan-uninstall",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "note": "卸载残留（32位程序）：子键引用的程序文件已全部不存在。"
+    },
+    {
+      "id": "reg-run-stale-sys",
+      "regKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "regMode": "missing-target",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresAdmin": true,
+      "note": "失效开机启动项（全系统）：启动命令指向的程序文件已不存在。"
+    },
+    {
+      "id": "reg-run-stale-sys32",
+      "regKey": "HKLM\\Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "regMode": "missing-target",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresAdmin": true,
+      "note": "失效开机启动项（32位程序）：指向的程序文件已不存在。"
+    },
+    {
+      "id": "reg-runonce-stale-sys",
+      "regKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "regMode": "missing-target",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresAdmin": true,
+      "note": "失效的一次性启动项（全系统）：指向的程序文件已不存在。"
+    },
+    {
+      "id": "reg-apppaths-stale-sys",
+      "regKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths",
+      "regMode": "missing-subkey",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "review",
+      "requiresAdmin": true,
+      "note": "失效 App Paths 项（全系统）：登记的程序路径已不存在。"
+    },
+    {
+      "id": "reg-shareddlls-stale",
+      "regKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\SharedDLLs",
+      "regMode": "missing-target-name",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "requiresAdmin": true,
+      "note": "失效共享 DLL 引用：值名登记的 DLL 文件已不存在，只剩安装计数残留。"
+    },
+    {
+      "id": "reg-muicache-stale",
+      "regKey": "HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache",
+      "regMode": "missing-target-name",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "失效程序名称缓存：值名登记的 exe 已不存在，只是资源管理器的显示缓存残留。"
+    },
+    {
+      "id": "reg-appcompat-store-stale",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Compatibility Assistant\\Store",
+      "regMode": "missing-target-name",
+      "tool": "注册表清理",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "失效兼容性助手记录：登记的程序路径已不存在。"
+    },
+    {
+      "id": "reg-mru-recentdocs",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "最近打开文件记录：开始菜单和任务栏跳转列表的「最近使用」清单。"
+    },
+    {
+      "id": "reg-mru-runmru",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "Win+R 运行历史：运行对话框输入过的命令记录。"
+    },
+    {
+      "id": "reg-mru-typedpaths",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\TypedPaths",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "资源管理器地址栏历史：手动输入过的路径记录。"
+    },
+    {
+      "id": "reg-mru-opensave",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "文件对话框历史：打开/保存对话框的最近文件记录。"
+    },
+    {
+      "id": "reg-mru-lastvisited",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "对话框程序历史：记录各程序最后用过的保存目录。"
+    },
+    {
+      "id": "reg-mru-mapnet",
+      "regKey": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Map Network Drive MRU",
+      "regMode": "clear-values",
+      "tool": "隐私痕迹",
+      "category": "system",
+      "risk": "caution",
+      "action": "delete",
+      "note": "映射网络驱动器历史：「映射网络驱动器」对话框的历史记录。"
     }
   ],
   "heuristics": {

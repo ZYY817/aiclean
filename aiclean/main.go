@@ -318,6 +318,9 @@ func guardMigOK(it model.ScanItem) (model.ScanItem, error) {
 	case "migrated":
 		return it, fmt.Errorf("该项已迁移，无需操作")
 	}
+	if it.Registry {
+		return it, nil // reg: 伪路径不走文件系统检查；可不可操作只看 State
+	}
 	if it.NoMigrate {
 		return it, fmt.Errorf("该项不适合迁移（云同步根/系统目录/程序本体），仅统计占用")
 	}
@@ -879,6 +882,14 @@ func cleanItem(a ...any) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	if it.Registry {
+		// 注册表没有可移动的文件，"隔离"= 导出 .reg+typed JSON 备份再删
+		meta, err := s.RegBackupDelete(it.RegKey, it.RegValue, app, note, retainDaysPref(s))
+		if err != nil {
+			return map[string]any{"ok": false, "error": err.Error()}, nil
+		}
+		return map[string]any{"ok": true, "id": meta.ID, "size": meta.Size}, nil
+	}
 	meta, err := s.Quarantine(it.Path, app, note, retainDaysPref(s))
 	if err != nil {
 		return map[string]any{"ok": false, "error": err.Error()}, nil
@@ -918,6 +929,14 @@ func deleteItem(a ...any) (any, error) {
 	}
 	if it.Special != "" {
 		return specialClean(s, it, app)
+	}
+	if it.Registry {
+		// 彻底删除对注册表仍然先备份（隔离区留 .reg 可导入），期满才真消失
+		meta, err := s.RegBackupDelete(it.RegKey, it.RegValue, app, "彻底删除（备份在清理残留中）", retainDaysPref(s))
+		if err != nil {
+			return map[string]any{"ok": false, "error": err.Error()}, nil
+		}
+		return map[string]any{"ok": true, "size": meta.Size}, nil
 	}
 	size, _, err := s.Delete(it.Path, app) // 用扫描时的权威路径：前端传的 path 只用于查表
 	if err != nil {
@@ -1125,6 +1144,9 @@ func migrateItem(a ...any) (any, error) {
 	it, err := guardPathMig(path)
 	if err != nil {
 		return map[string]any{"ok": false, "error": err.Error()}, nil
+	}
+	if it.Registry {
+		return map[string]any{"ok": false, "error": "注册表项不支持迁移"}, nil
 	}
 	if err := checkStillClosed(it); err != nil {
 		return map[string]any{"ok": false, "error": err.Error()}, nil
@@ -2570,6 +2592,13 @@ func openPath(a ...any) (any, error) {
 	path, _ := m["path"].(string)
 	if path == "" {
 		return map[string]any{"ok": false, "error": "path 为空"}, nil
+	}
+	if strings.HasPrefix(path, "reg:") {
+		// 注册表项没有文件位置，打开 regedit 让用户自己定位键
+		if err := exec.Command("regedit").Start(); err != nil {
+			return map[string]any{"ok": false, "error": err.Error()}, nil
+		}
+		return map[string]any{"ok": true}, nil
 	}
 	if err := exec.Command("explorer", "/select,", filepath.Clean(path)).Start(); err != nil {
 		return map[string]any{"ok": false, "error": err.Error()}, nil

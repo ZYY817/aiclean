@@ -37,6 +37,14 @@ func validAction(a string) bool {
 	}
 	return false
 }
+func validRegMode(s string) bool {
+	switch s {
+	case "orphan-uninstall", "missing-target", "missing-target-name", "missing-subkey", "clear-values":
+		return true
+	}
+	return false
+}
+
 func validSpecial(s string) bool {
 	switch s {
 	case "", "recycleBin", "winUpdate", "hiberOff":
@@ -55,8 +63,11 @@ func checkRules(t *testing.T, rules []model.Rule, src string) {
 			t.Fatalf("%s dup rule id %q", src, r.ID)
 		}
 		ids[r.ID] = true
-		if r.Path == "" {
-			t.Fatalf("%s rule %s empty path", src, r.ID)
+		if r.Path == "" && r.RegKey == "" {
+			t.Fatalf("%s rule %s empty path/regKey", src, r.ID)
+		}
+		if r.RegKey != "" && !validRegMode(r.RegMode) {
+			t.Fatalf("%s rule %s bad regMode %q", src, r.ID, r.RegMode)
 		}
 		if !validRisk(r.Risk) {
 			t.Fatalf("%s rule %s bad risk %q", src, r.ID, r.Risk)
@@ -74,7 +85,11 @@ func checkRules(t *testing.T, rules []model.Rule, src string) {
 	// 父目录规则不标 reportOnly/scanHeuristics 会吞掉子规则）
 	seen := map[string]string{}
 	for _, r := range rules {
-		p := strings.ToLower(strings.ReplaceAll(r.Path, "/", `\`))
+		key := r.Path
+		if key == "" {
+			key = "reg:" + r.RegKey + "#" + r.RegMode // 注册表规则：键+模式判重
+		}
+		p := strings.ToLower(strings.ReplaceAll(key, "/", `\`))
 		if prev, dup := seen[p]; dup {
 			t.Fatalf("%s rules %q and %q point to same path %s", src, prev, r.ID, p)
 		}
